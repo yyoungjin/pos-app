@@ -23,7 +23,7 @@ function OrderTableView() {
   const rows = [...mockOrders].sort((a, b) => b.orderTime.localeCompare(a.orderTime))
 
   return (
-    <section className="mx-auto w-full max-w-6xl rounded-2xl bg-white p-5 shadow-sm ring-1 ring-slate-200 sm:p-6">
+    <section className="mx-auto w-full max-w-6xl rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200 sm:p-4">
       <header className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">주점 주문 관리 POS</h2>
@@ -35,7 +35,7 @@ function OrderTableView() {
       </header>
 
       <div className="overflow-x-auto rounded-xl ring-1 ring-slate-200">
-        <table className="min-w-full border-collapse text-left text-sm">
+        <table className="min-w-full border-collapse text-left text-base">
           <thead className="bg-slate-50 text-slate-700">
             <tr>
               <th className="border-b border-slate-200 px-4 py-3 font-semibold">주문 시간</th>

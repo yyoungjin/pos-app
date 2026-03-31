@@ -33,20 +33,20 @@ function QueueCard({ order, menus, priorityRank }) {
 
   const bodyTextClass =
     priorityRank === PRIORITY_RANK.FIRST
-      ? 'text-xs leading-snug'
+      ? 'text-sm leading-snug'
       : priorityRank === PRIORITY_RANK.SECOND
-        ? 'text-[12px] leading-snug'
+        ? 'text-sm leading-snug'
         : priorityRank === PRIORITY_RANK.THIRD
-          ? 'text-[12px] leading-snug'
-          : 'text-[11px] leading-snug'
+          ? 'text-sm leading-snug'
+          : 'text-[13px] leading-snug'
 
   const labelClass =
     priorityRank === PRIORITY_RANK.FIRST
-      ? 'text-xs font-extrabold text-white drop-shadow-sm'
+      ? 'text-sm font-extrabold text-white drop-shadow-sm'
       : priorityRank === PRIORITY_RANK.SECOND
-        ? 'text-[11px] font-extrabold text-rose-900'
+        ? 'text-xs font-extrabold text-rose-900'
         : priorityRank === PRIORITY_RANK.THIRD
-          ? 'text-[11px] font-bold text-rose-600/85'
+          ? 'text-xs font-bold text-rose-600/85'
           : ''
 
   const listClass =
@@ -67,15 +67,6 @@ function QueueCard({ order, menus, priorityRank }) {
           ? 'text-slate-600'
           : 'text-slate-600'
 
-  const metaTextClass =
-    priorityRank === PRIORITY_RANK.FIRST
-      ? 'text-[11px]'
-      : priorityRank === PRIORITY_RANK.SECOND
-        ? 'text-[10px]'
-        : priorityRank === PRIORITY_RANK.THIRD
-          ? 'text-[10px]'
-          : 'text-[10px]'
-
   const lineClamp = isPriority ? '' : 'truncate'
 
   return (
@@ -88,7 +79,7 @@ function QueueCard({ order, menus, priorityRank }) {
           </li>
         ))}
       </ul>
-      <div className={`mt-auto flex shrink-0 items-center justify-between gap-1 pt-1 ${metaTextClass} ${metaClass}`}>
+      <div className={`mt-auto flex shrink-0 items-center justify-between gap-1 pt-1 text-xs ${metaClass}`}>
         <span className="font-medium">T{order.tableNumber}</span>
         <span>{order.orderTime}</span>
       </div>
@@ -120,20 +111,20 @@ function ServedCard({ order, menus, freshRank }) {
 
   const bodyTextClass =
     freshRank === PRIORITY_RANK.FIRST
-      ? 'text-xs leading-snug'
+      ? 'text-sm leading-snug'
       : freshRank === PRIORITY_RANK.SECOND
-        ? 'text-[12px] leading-snug'
+        ? 'text-sm leading-snug'
         : freshRank === PRIORITY_RANK.THIRD
-          ? 'text-[12px] leading-snug'
-          : 'text-[11px] leading-snug'
+          ? 'text-sm leading-snug'
+          : 'text-[13px] leading-snug'
 
   const labelClass =
     freshRank === PRIORITY_RANK.FIRST
-      ? 'text-xs font-extrabold text-white drop-shadow-sm'
+      ? 'text-sm font-extrabold text-white drop-shadow-sm'
       : freshRank === PRIORITY_RANK.SECOND
-        ? 'text-[11px] font-extrabold text-emerald-950'
+        ? 'text-xs font-extrabold text-emerald-950'
         : freshRank === PRIORITY_RANK.THIRD
-          ? 'text-[11px] font-bold text-emerald-700/90'
+          ? 'text-xs font-bold text-emerald-700/90'
           : ''
 
   const listClass =
@@ -154,15 +145,6 @@ function ServedCard({ order, menus, freshRank }) {
           ? 'text-slate-600'
           : 'text-slate-600'
 
-  const metaTextClass =
-    freshRank === PRIORITY_RANK.FIRST
-      ? 'text-[11px]'
-      : freshRank === PRIORITY_RANK.SECOND
-        ? 'text-[10px]'
-        : freshRank === PRIORITY_RANK.THIRD
-          ? 'text-[10px]'
-          : 'text-[10px]'
-
   const lineClamp = isFresh ? '' : 'truncate'
 
   return (
@@ -175,7 +157,7 @@ function ServedCard({ order, menus, freshRank }) {
           </li>
         ))}
       </ul>
-      <div className={`mt-auto flex shrink-0 items-center justify-between gap-1 pt-1 ${metaTextClass} ${metaClass}`}>
+      <div className={`mt-auto flex shrink-0 items-center justify-between gap-1 pt-1 text-xs ${metaClass}`}>
         <span className="font-medium">T{order.tableNumber}</span>
         <span>{order.orderTime}</span>
       </div>
@@ -206,10 +188,68 @@ function buildServedColumnTemplate(columnCount) {
   }).join(' ')
 }
 
+function PendingTableHeaderRow({ displayPending, gridTemplateColumns, priorityRankByOrderId }) {
+  if (displayPending.length === 0) return null
+
+  return (
+    <div className="grid gap-1" style={{ gridTemplateColumns }} role="presentation">
+      {displayPending.map((order) => {
+        const rank = priorityRankByOrderId.get(order.id)
+        const cellTone =
+          rank === PRIORITY_RANK.FIRST
+            ? 'bg-rose-200/80 text-rose-950 ring-rose-400/50'
+            : rank === PRIORITY_RANK.SECOND
+              ? 'bg-rose-100/90 text-rose-900 ring-rose-300/45'
+              : rank === PRIORITY_RANK.THIRD
+                ? 'bg-rose-50 text-rose-800 ring-rose-200/50'
+                : 'bg-amber-200/50 text-amber-950 ring-amber-300/40'
+
+        return (
+          <div
+            key={order.id}
+            className={`flex min-h-8 min-w-0 items-center justify-center rounded-md px-0.5 text-center text-xs font-extrabold tabular-nums ring-1 ${cellTone}`}
+          >
+            T{order.tableNumber}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
+function ServedTableHeaderRow({ displayCompleted, gridTemplateColumns, freshRankByOrderId }) {
+  if (displayCompleted.length === 0) return null
+
+  return (
+    <div className="grid gap-1" style={{ gridTemplateColumns }} role="presentation">
+      {displayCompleted.map((order) => {
+        const rank = freshRankByOrderId.get(order.id)
+        const cellTone =
+          rank === PRIORITY_RANK.FIRST
+            ? 'bg-emerald-300/85 text-emerald-950 ring-emerald-600/40'
+            : rank === PRIORITY_RANK.SECOND
+              ? 'bg-emerald-200/90 text-emerald-950 ring-emerald-500/35'
+              : rank === PRIORITY_RANK.THIRD
+                ? 'bg-emerald-100 text-emerald-900 ring-emerald-400/40'
+                : 'bg-emerald-200/45 text-emerald-950 ring-emerald-300/45'
+
+        return (
+          <div
+            key={order.id}
+            className={`flex min-h-8 min-w-0 items-center justify-center rounded-md px-0.5 text-center text-xs font-extrabold tabular-nums ring-1 ${cellTone}`}
+          >
+            T{order.tableNumber}
+          </div>
+        )
+      })}
+    </div>
+  )
+}
+
 function PendingLane({ category, displayPending, priorityRankByOrderId, gridTemplateColumns }) {
   return (
     <div className="min-h-0 shrink-0">
-      <h3 className="text-xs font-bold tracking-tight text-slate-900">{category} 대기열</h3>
+      <h3 className="text-sm font-bold tracking-tight text-slate-900">{category} 대기열</h3>
       <div className="mt-1 grid h-full auto-rows-fr gap-1" style={{ gridTemplateColumns }}>
         {displayPending.map((order) => {
           const menus = order.items[category]
@@ -239,7 +279,7 @@ function PendingLane({ category, displayPending, priorityRankByOrderId, gridTemp
 function CompletedLane({ category, displayCompleted, freshRankByOrderId, gridTemplateColumns }) {
   return (
     <div className="min-h-0 min-w-0 shrink-0">
-      <h3 className="text-xs font-bold tracking-tight text-slate-900">{category} · 서빙 완료</h3>
+      <h3 className="text-sm font-bold tracking-tight text-slate-900">{category} · 서빙 완료</h3>
       <div className="mt-1 grid h-full auto-rows-fr gap-1" style={{ gridTemplateColumns }}>
         {displayCompleted.map((order) => {
           const menus = order.items[category]
@@ -285,8 +325,8 @@ function OrderSlipView() {
   const servedGridTemplateColumns = buildServedColumnTemplate(displayCompleted.length)
 
   return (
-    <section className="mx-auto flex w-full max-w-6xl min-h-0 flex-col rounded-xl bg-white p-3 shadow-sm ring-1 ring-slate-200 sm:p-4 md:h-[min(880px,calc(100svh-10rem))] md:overflow-hidden">
-      <header className="mb-2 flex shrink-0 flex-wrap items-baseline justify-between gap-2">
+    <section className="mx-auto flex w-full max-w-6xl min-h-0 flex-col rounded-xl bg-white p-2 shadow-sm ring-1 ring-slate-200 sm:p-2.5 md:h-[min(880px,calc(100svh-8.5rem))] md:overflow-hidden">
+      <header className="mb-1.5 flex shrink-0 flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-lg font-bold tracking-tight text-slate-900">주점 주문 관리 POS</h2>
         <p className="text-xs text-slate-500">
           대기 {pendingOrders.length} · 완료 {completedOrders.length}
@@ -303,19 +343,26 @@ function OrderSlipView() {
           className="pointer-events-none absolute inset-y-3 left-1/2 hidden w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-slate-300/60 to-transparent md:block"
         />
 
-        <div className="relative flex min-h-0 min-w-0 flex-col gap-8 overflow-x-auto overflow-y-hidden p-3 md:p-3.5">
-          <p className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-amber-900/70">
+        <div className="relative flex min-h-0 min-w-0 flex-col gap-1.5 overflow-x-auto overflow-y-hidden p-2 md:p-2.5">
+          <p className="shrink-0 text-xs font-bold uppercase tracking-wider text-amber-900/70">
             주문 대기
           </p>
-          {ORDER_CATEGORIES.map((category) => (
-            <PendingLane
-              key={category}
-              category={category}
-              displayPending={displayPending}
-              priorityRankByOrderId={priorityRankByOrderId}
-              gridTemplateColumns={pendingGridTemplateColumns}
-            />
-          ))}
+          <PendingTableHeaderRow
+            displayPending={displayPending}
+            gridTemplateColumns={pendingGridTemplateColumns}
+            priorityRankByOrderId={priorityRankByOrderId}
+          />
+          <div className="flex min-h-0 min-w-0 flex-col gap-8">
+            {ORDER_CATEGORIES.map((category) => (
+              <PendingLane
+                key={category}
+                category={category}
+                displayPending={displayPending}
+                priorityRankByOrderId={priorityRankByOrderId}
+                gridTemplateColumns={pendingGridTemplateColumns}
+              />
+            ))}
+          </div>
         </div>
 
         <div
@@ -333,19 +380,26 @@ function OrderSlipView() {
           </div>
         </div>
 
-        <div className="relative flex min-h-0 min-w-0 flex-col gap-8 overflow-x-auto overflow-y-hidden border-t border-emerald-200/60 p-3 md:border-t-0 md:border-l md:border-emerald-200/50 md:p-3.5">
-          <p className="shrink-0 text-[10px] font-bold uppercase tracking-wider text-emerald-900/75">
+        <div className="relative flex min-h-0 min-w-0 flex-col gap-1.5 overflow-x-auto overflow-y-hidden border-t border-emerald-200/60 p-2 md:border-t-0 md:border-l md:border-emerald-200/50 md:p-2.5">
+          <p className="shrink-0 text-xs font-bold uppercase tracking-wider text-emerald-900/75">
             서빙 완료
           </p>
-          {ORDER_CATEGORIES.map((category) => (
-            <CompletedLane
-              key={category}
-              category={category}
-              displayCompleted={displayCompleted}
-              freshRankByOrderId={freshRankByOrderId}
-              gridTemplateColumns={servedGridTemplateColumns}
-            />
-          ))}
+          <ServedTableHeaderRow
+            displayCompleted={displayCompleted}
+            gridTemplateColumns={servedGridTemplateColumns}
+            freshRankByOrderId={freshRankByOrderId}
+          />
+          <div className="flex min-h-0 min-w-0 flex-col gap-8">
+            {ORDER_CATEGORIES.map((category) => (
+              <CompletedLane
+                key={category}
+                category={category}
+                displayCompleted={displayCompleted}
+                freshRankByOrderId={freshRankByOrderId}
+                gridTemplateColumns={servedGridTemplateColumns}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </section>
