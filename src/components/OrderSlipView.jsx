@@ -217,9 +217,9 @@ function ServedTableHeaderRow({ displayCompleted, gridTemplateColumns, freshRank
   )
 }
 
-function PendingLane({ category, displayPending, priorityRankByOrderId, gridTemplateColumns }) {
+function PendingLane({ category, displayPending, priorityRankByOrderId, gridTemplateColumns, dataTutorial }) {
   return (
-    <div className="min-h-0 shrink-0">
+    <div className="min-h-0 shrink-0" data-tutorial={dataTutorial}>
       <h3 className="text-sm font-bold tracking-tight text-slate-900">{category} 대기열</h3>
       <div className="mt-1 grid h-full auto-rows-fr gap-1" style={{ gridTemplateColumns }}>
         {displayPending.map((order) => {
@@ -247,9 +247,9 @@ function PendingLane({ category, displayPending, priorityRankByOrderId, gridTemp
   )
 }
 
-function CompletedLane({ category, displayCompleted, freshRankByOrderId, gridTemplateColumns }) {
+function CompletedLane({ category, displayCompleted, freshRankByOrderId, gridTemplateColumns, dataTutorial }) {
   return (
-    <div className="min-h-0 min-w-0 shrink-0">
+    <div className="min-h-0 min-w-0 shrink-0" data-tutorial={dataTutorial}>
       <h3 className="text-sm font-bold tracking-tight text-slate-900">{category} · 서빙 완료</h3>
       <div className="mt-1 grid h-full auto-rows-fr gap-1" style={{ gridTemplateColumns }}>
         {displayCompleted.map((order) => {
@@ -296,7 +296,10 @@ function OrderSlipView() {
   const servedGridTemplateColumns = buildServedColumnTemplate(displayCompleted.length)
 
   return (
-    <section className="mx-auto flex w-full max-w-6xl min-h-0 flex-col rounded-xl bg-white p-2 shadow-sm ring-1 ring-slate-200 sm:p-2.5 md:h-[min(880px,calc(100svh-8.5rem))] md:overflow-hidden">
+    <section
+      data-tutorial="slip-root"
+      className="mx-auto flex w-full max-w-6xl min-h-0 flex-col rounded-xl bg-white p-2 shadow-sm ring-1 ring-slate-200 sm:p-2.5 md:h-[min(880px,calc(100svh-8.5rem))] md:overflow-hidden"
+    >
       <header className="mb-1.5 flex shrink-0 flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-lg font-bold tracking-tight text-slate-900">주점 주문 관리 POS</h2>
         <p className="text-xs text-slate-500">
@@ -314,29 +317,36 @@ function OrderSlipView() {
           className="pointer-events-none absolute inset-y-3 left-1/2 hidden w-px -translate-x-1/2 bg-gradient-to-b from-transparent via-slate-300/60 to-transparent md:block"
         />
 
-        <div className="relative flex min-h-0 min-w-0 flex-col gap-1.5 overflow-x-auto overflow-y-hidden p-2 md:p-2.5">
+        <div
+          data-tutorial="slip-pending"
+          className="relative flex min-h-0 min-w-0 flex-col gap-1.5 overflow-x-auto overflow-y-hidden p-2 md:p-2.5"
+        >
           <p className="shrink-0 text-xs font-bold uppercase tracking-wider text-amber-900/70">
             주문 대기
           </p>
-          <PendingTableHeaderRow
-            displayPending={displayPending}
-            gridTemplateColumns={pendingGridTemplateColumns}
-            priorityRankByOrderId={priorityRankByOrderId}
-          />
+          <div data-tutorial="slip-pending-header">
+            <PendingTableHeaderRow
+              displayPending={displayPending}
+              gridTemplateColumns={pendingGridTemplateColumns}
+              priorityRankByOrderId={priorityRankByOrderId}
+            />
+          </div>
           <div className="flex min-h-0 min-w-0 flex-col gap-8">
-            {ORDER_CATEGORIES.map((category) => (
+            {ORDER_CATEGORIES.map((category, index) => (
               <PendingLane
                 key={category}
                 category={category}
                 displayPending={displayPending}
                 priorityRankByOrderId={priorityRankByOrderId}
                 gridTemplateColumns={pendingGridTemplateColumns}
+                dataTutorial={index === 0 ? 'slip-first-lane' : undefined}
               />
             ))}
           </div>
         </div>
 
         <div
+          data-tutorial="slip-pipeline"
           className="relative hidden w-9 shrink-0 flex-col items-center justify-center gap-0.5 self-stretch md:flex"
           aria-hidden
         >
@@ -351,7 +361,10 @@ function OrderSlipView() {
           </div>
         </div>
 
-        <div className="relative flex min-h-0 min-w-0 flex-col gap-1.5 overflow-x-auto overflow-y-hidden border-t border-emerald-200/60 p-2 md:border-t-0 md:border-l md:border-emerald-200/50 md:p-2.5">
+        <div
+          data-tutorial="slip-served"
+          className="relative flex min-h-0 min-w-0 flex-col gap-1.5 overflow-x-auto overflow-y-hidden border-t border-emerald-200/60 p-2 md:border-t-0 md:border-l md:border-emerald-200/50 md:p-2.5"
+        >
           <p className="shrink-0 text-xs font-bold uppercase tracking-wider text-emerald-900/75">
             서빙 완료
           </p>
@@ -361,13 +374,14 @@ function OrderSlipView() {
             freshRankByOrderId={freshRankByOrderId}
           />
           <div className="flex min-h-0 min-w-0 flex-col gap-8">
-            {ORDER_CATEGORIES.map((category) => (
+            {ORDER_CATEGORIES.map((category, index) => (
               <CompletedLane
                 key={category}
                 category={category}
                 displayCompleted={displayCompleted}
                 freshRankByOrderId={freshRankByOrderId}
                 gridTemplateColumns={servedGridTemplateColumns}
+                dataTutorial={index === 0 ? 'slip-first-served-lane' : undefined}
               />
             ))}
           </div>
