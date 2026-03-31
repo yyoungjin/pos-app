@@ -1,7 +1,7 @@
-import OrderTableView from './components/OrderTableView'
+import PosViewExperiment from './components/PosViewExperiment'
 
 function App() {
-  return <OrderTableView />
+  return <PosViewExperiment />
 }
 
 export default App
