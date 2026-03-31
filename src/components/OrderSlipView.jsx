@@ -1,5 +1,8 @@
 import { menuChipClass, mockOrders, ORDER_CATEGORIES, ORDER_STATUS } from '../data/mockOrders'
 
+/** 주문(열) 사이 간격 — 테이블 열이 눈으로 구분되도록 */
+const SLIP_COLUMN_GAP = 'gap-2.5'
+
 function sortByOldestOrder(a, b) {
   return a.orderTime.localeCompare(b.orderTime)
 }
@@ -17,6 +20,10 @@ const PENDING_LANE_PANEL = {
   음료: 'rounded-xl bg-gradient-to-br from-pink-200/50 via-fuchsia-100/40 to-pink-50/35 p-2 ring-1 ring-pink-300/35',
 }
 
+/** 서빙 완료 레인 — 대기열과 동일 패딩·리듬으로 좌우 셀 높이 정렬 */
+const SERVING_LANE_PANEL =
+  'rounded-xl bg-gradient-to-br from-emerald-50/55 via-white to-emerald-50/35 p-2 ring-1 ring-emerald-200/40'
+
 function pendingShellClass(category, priorityRank) {
   const r = priorityRank
   if (category === '메인') {
@@ -24,38 +31,38 @@ function pendingShellClass(category, priorityRank) {
       return 'border-t-[3px] border-blue-500 bg-gradient-to-b from-blue-200/95 via-sky-100 to-blue-50 ring-blue-300/35 shadow-sm'
     }
     if (r === PRIORITY_RANK.SECOND) {
-      return 'border-t-2 border-blue-400/90 bg-gradient-to-b from-blue-100 via-sky-50 to-white ring-blue-200/45'
+      return 'border-t-[3px] border-blue-400/90 bg-gradient-to-b from-blue-100 via-sky-50 to-white ring-blue-200/45'
     }
     if (r === PRIORITY_RANK.THIRD) {
-      return 'border-t border-blue-200/70 bg-gradient-to-b from-white via-blue-50/85 to-sky-50/35 ring-blue-200/35'
+      return 'border-t-[3px] border-blue-200/70 bg-gradient-to-b from-white via-blue-50/85 to-sky-50/35 ring-blue-200/35'
     }
-    return 'border-t-0 bg-white ring-blue-200/80'
+    return 'border-t-[3px] border-transparent bg-white ring-blue-200/80'
   }
   if (category === '사이드') {
     if (r === PRIORITY_RANK.FIRST) {
       return 'border-t-[3px] border-orange-500 bg-gradient-to-b from-orange-200/95 via-amber-100 to-orange-50 ring-orange-300/35 shadow-sm'
     }
     if (r === PRIORITY_RANK.SECOND) {
-      return 'border-t-2 border-orange-400/90 bg-gradient-to-b from-orange-100 via-amber-50 to-white ring-orange-200/45'
+      return 'border-t-[3px] border-orange-400/90 bg-gradient-to-b from-orange-100 via-amber-50 to-white ring-orange-200/45'
     }
     if (r === PRIORITY_RANK.THIRD) {
-      return 'border-t border-orange-200/75 bg-gradient-to-b from-white via-orange-50/85 to-amber-50/35 ring-orange-200/35'
+      return 'border-t-[3px] border-orange-200/75 bg-gradient-to-b from-white via-orange-50/85 to-amber-50/35 ring-orange-200/35'
     }
-    return 'border-t-0 bg-white ring-orange-200/80'
+    return 'border-t-[3px] border-transparent bg-white ring-orange-200/80'
   }
   if (category === '음료') {
     if (r === PRIORITY_RANK.FIRST) {
       return 'border-t-[3px] border-fuchsia-500 bg-gradient-to-b from-pink-200/95 via-fuchsia-100 to-pink-50 ring-fuchsia-300/35 shadow-sm'
     }
     if (r === PRIORITY_RANK.SECOND) {
-      return 'border-t-2 border-pink-400/90 bg-gradient-to-b from-pink-100 via-fuchsia-50 to-white ring-pink-200/45'
+      return 'border-t-[3px] border-pink-400/90 bg-gradient-to-b from-pink-100 via-fuchsia-50 to-white ring-pink-200/45'
     }
     if (r === PRIORITY_RANK.THIRD) {
-      return 'border-t border-pink-200/75 bg-gradient-to-b from-white via-pink-50/85 to-fuchsia-50/35 ring-pink-200/35'
+      return 'border-t-[3px] border-pink-200/75 bg-gradient-to-b from-white via-pink-50/85 to-fuchsia-50/35 ring-pink-200/35'
     }
-    return 'border-t-0 bg-white ring-pink-200/80'
+    return 'border-t-[3px] border-transparent bg-white ring-pink-200/80'
   }
-  return 'border-t-0 bg-white ring-amber-200/80'
+  return 'border-t-[3px] border-transparent bg-white ring-amber-200/80'
 }
 
 function pendingMetaClass(category, priorityRank) {
@@ -95,8 +102,10 @@ function pendingPulseRingClass(category) {
   return 'ring-rose-500'
 }
 
-/** 주문 대기 / 서빙 완료 셀 높이·패딩 공통 (좌우 동일, 뷰포트 높이에 맞춰 clamp) */
-const SLIP_CELL_FRAME = 'h-[clamp(7.25rem,17svh,13.5rem)] shrink-0 px-2.5 py-2'
+/** 주문 대기 / 서빙 완료 셀 높이·패딩 공통 (동일 border-top 두께와 함께 픽셀 단위로 통일) */
+const SLIP_CELL_HEIGHT =
+  'h-[clamp(7.25rem,17svh,13.5rem)] min-h-[clamp(7.25rem,17svh,13.5rem)] max-h-[clamp(7.25rem,17svh,13.5rem)]'
+const SLIP_CELL_FRAME = `${SLIP_CELL_HEIGHT} box-border shrink-0 px-2.5 py-2`
 
 function QueueCard({
   order,
@@ -192,10 +201,10 @@ function ServedCard({
     freshRank === PRIORITY_RANK.FIRST
       ? 'border-t-[3px] border-emerald-500 bg-gradient-to-b from-emerald-200/95 via-emerald-100 to-emerald-50 ring-emerald-300/35 shadow-sm'
       : freshRank === PRIORITY_RANK.SECOND
-        ? 'border-t-2 border-emerald-400/90 bg-gradient-to-b from-emerald-100 via-emerald-50 to-white ring-emerald-200/45'
+        ? 'border-t-[3px] border-emerald-400/90 bg-gradient-to-b from-emerald-100 via-emerald-50 to-white ring-emerald-200/45'
         : freshRank === PRIORITY_RANK.THIRD
-          ? 'border-t border-emerald-200/80 bg-gradient-to-b from-white via-emerald-50/85 to-emerald-50/35 ring-emerald-200/35'
-          : 'border-t-0 bg-white ring-emerald-200/80'
+          ? 'border-t-[3px] border-emerald-200/80 bg-gradient-to-b from-white via-emerald-50/85 to-emerald-50/35 ring-emerald-200/35'
+          : 'border-t-[3px] border-transparent bg-white ring-emerald-200/80'
 
   const bodyTextClass =
     freshRank === PRIORITY_RANK.FIRST
@@ -294,7 +303,7 @@ function PendingTableHeaderRow({ displayPending, gridTemplateColumns, priorityRa
   if (displayPending.length === 0) return null
 
   return (
-    <div className="grid gap-1" style={{ gridTemplateColumns }} role="presentation">
+    <div className={`grid ${SLIP_COLUMN_GAP}`} style={{ gridTemplateColumns }} role="presentation">
       {displayPending.map((order) => {
         const rank = priorityRankByOrderId.get(order.id)
         const cellTone =
@@ -323,7 +332,7 @@ function ServedTableHeaderRow({ displayCompleted, gridTemplateColumns, freshRank
   if (displayCompleted.length === 0) return null
 
   return (
-    <div className="grid gap-1" style={{ gridTemplateColumns }} role="presentation">
+    <div className={`grid ${SLIP_COLUMN_GAP}`} style={{ gridTemplateColumns }} role="presentation">
       {displayCompleted.map((order) => {
         const rank = freshRankByOrderId.get(order.id)
         const cellTone =
@@ -380,7 +389,10 @@ function PendingLane({
   return (
     <div className={`min-h-0 shrink-0 ${lanePanel}`} data-tutorial={dataTutorial}>
       <h3 className={laneTitleClass}>{category} 대기열</h3>
-      <div className="mt-1 grid h-full auto-rows-fr gap-1" style={{ gridTemplateColumns }}>
+      <div
+        className={`mt-1 grid h-full auto-rows-fr items-stretch ${SLIP_COLUMN_GAP}`}
+        style={{ gridTemplateColumns }}
+      >
         {displayPending.map((order) => {
           const menus = order.items[category]
           if (!menus?.length) {
@@ -423,9 +435,12 @@ function CompletedLane({
   pulseKey,
 }) {
   return (
-    <div className="min-h-0 min-w-0 shrink-0" data-tutorial={dataTutorial}>
-      <h3 className="text-sm font-bold tracking-tight text-slate-900">{category} · 서빙 완료</h3>
-      <div className="mt-1 grid h-full auto-rows-fr gap-1" style={{ gridTemplateColumns }}>
+    <div className={`min-h-0 min-w-0 shrink-0 ${SERVING_LANE_PANEL}`} data-tutorial={dataTutorial}>
+      <h3 className="text-sm font-bold tracking-tight text-emerald-950">{category} · 서빙 완료</h3>
+      <div
+        className={`mt-1 grid h-full auto-rows-fr items-stretch ${SLIP_COLUMN_GAP}`}
+        style={{ gridTemplateColumns }}
+      >
         {displayCompleted.map((order) => {
           const menus = order.items[category]
           if (!menus?.length) {
