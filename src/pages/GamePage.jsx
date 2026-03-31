@@ -1,4 +1,5 @@
 import { useState, useCallback, useRef, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import OrderTableView from '../components/OrderTableView'
 import OrderSlipView from '../components/OrderSlipView'
 
@@ -157,6 +158,7 @@ function measureTarget(wrapEl, target, phase) {
 const SPOT_MASK_ID = 'game-tutorial-spot-mask'
 
 function GamePage() {
+  const navigate = useNavigate()
   const [phase, setPhase] = useState('table')
   const [step, setStep] = useState(0)
   const wrapRef = useRef(null)
@@ -217,7 +219,8 @@ function GamePage() {
     function handleKey(e) {
       if (e.key === 'ArrowRight' || e.key === 'Enter' || e.key === ' ') {
         e.preventDefault()
-        if (!isLastSlipStep) next()
+        if (isLastSlipStep) navigate('/game')
+        else next()
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault()
         prev()
@@ -225,13 +228,13 @@ function GamePage() {
     }
     window.addEventListener('keydown', handleKey)
     return () => window.removeEventListener('keydown', handleKey)
-  }, [next, prev, isLastSlipStep])
+  }, [next, prev, isLastSlipStep, navigate])
 
   const progress = ((step + 1) / steps.length) * 100
   const phaseLabel = phase === 'table' ? '표 뷰' : '주문서 뷰'
 
   const nextLabel =
-    isLastTableStep ? '다음: 주문서 뷰 →' : isLastSlipStep ? '완료!' : '다음 →'
+    isLastTableStep ? '다음: 주문서 뷰 →' : isLastSlipStep ? '게임 시작 →' : '다음 →'
 
   return (
     <main className="relative min-h-screen bg-slate-100 px-2 py-3 text-slate-900 sm:px-3 sm:py-4 lg:px-4">
@@ -249,9 +252,10 @@ function GamePage() {
       <svg
         className="pointer-events-auto fixed inset-0 z-40 h-full w-full"
         onClick={() => {
-          if (!isLastSlipStep) next()
+          if (isLastSlipStep) navigate('/game')
+          else next()
         }}
-        style={{ cursor: isLastSlipStep ? 'default' : 'pointer' }}
+        style={{ cursor: 'pointer' }}
       >
         <defs>
           <mask id={SPOT_MASK_ID}>
@@ -338,9 +342,11 @@ function GamePage() {
             </button>
             <button
               type="button"
-              onClick={next}
-              disabled={isLastSlipStep}
-              className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-40"
+              onClick={() => {
+                if (isLastSlipStep) navigate('/game')
+                else next()
+              }}
+              className="rounded-lg bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800"
             >
               {nextLabel}
             </button>

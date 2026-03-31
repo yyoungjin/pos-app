@@ -1,5 +1,6 @@
-import { mockOrders, ORDER_CATEGORIES } from '../data/mockOrders'
+import { mockOrders } from '../data/mockOrders'
 import OrderStatusBadge from './OrderStatusBadge'
+import { buildMenuRows } from '../utils/menuRows'
 
 /** 상태 뱃지와 동일한 pill 스타일로 카테고리 구분 */
 const categoryBadgeClass = {
@@ -54,28 +55,16 @@ function TableNumberBadge({ tableNumber }) {
   )
 }
 
-/** 최신 주문이 위로 오도록 정렬한 뒤, 주문·카테고리 순으로 한 메뉴 = 한 행 */
-function buildMenuRows(orders) {
-  const sorted = [...orders].sort((a, b) => b.orderTime.localeCompare(a.orderTime))
-  const rows = []
-  for (const order of sorted) {
-    for (const category of ORDER_CATEGORIES) {
-      const menus = order.items[category] ?? []
-      menus.forEach((menuName, idx) => {
-        rows.push({
-          key: `${order.id}-${category}-${idx}`,
-          order,
-          category,
-          menuName,
-        })
-      })
-    }
-  }
-  return rows
-}
-
-function OrderTableView() {
-  const rows = buildMenuRows(mockOrders)
+function OrderTableView({
+  orders = mockOrders,
+  interactive = false,
+  /** 게임 등: 처리 순서(오래된 주문이 위)와 정답 로직을 맞춤 */
+  menuNewestFirst = true,
+  onMenuRowClick,
+  selectedKeys = [],
+  pulseKey = null,
+}) {
+  const rows = buildMenuRows(orders, menuNewestFirst)
 
   return (
     <section className="mx-auto w-full max-w-6xl rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200 sm:p-4">
@@ -83,16 +72,20 @@ function OrderTableView() {
         <div>
           <h2 className="text-2xl font-bold tracking-tight">주점 주문 관리 POS</h2>
           <p className="mt-1 text-sm text-slate-600">
-            엑셀형 표 뷰 - 메뉴 한 줄이 한 행 · 주문은 시간·테이블·상태가 행마다 반복 · 최신 주문이 위쪽
+            {menuNewestFirst
+              ? '엑셀형 표 뷰 - 메뉴 한 줄이 한 행 · 주문은 시간·테이블·상태가 행마다 반복 · 최신 주문이 위쪽'
+              : '엑셀형 표 뷰 - 처리 우선순위(오래된 주문이 위쪽) · 메뉴 한 줄이 한 행'}
           </p>
         </div>
         <div className="text-right text-sm text-slate-500">
           <div>메뉴 행 {rows.length}줄</div>
-          <div className="text-xs text-slate-400">주문 {mockOrders.length}건</div>
+          <div className="text-xs text-slate-400">주문 {orders.length}건</div>
         </div>
       </header>
 
-      <div className="overflow-x-auto rounded-xl ring-1 ring-slate-200">
+      <div
+        className={`overflow-x-auto rounded-xl ring-1 ring-slate-200 ${interactive ? 'relative z-10' : ''}`}
+      >
         <table className="min-w-full border-collapse text-left text-sm">
           <thead className="bg-slate-100 text-slate-800">
             <tr>
@@ -104,23 +97,49 @@ function OrderTableView() {
             </tr>
           </thead>
           <tbody className="bg-white">
-            {rows.map(({ key, order, category, menuName }) => (
-              <tr key={key} className="hover:bg-slate-50/80">
-                <td className="whitespace-nowrap border border-slate-200 px-3 py-2 tabular-nums text-slate-700">
-                  {order.orderTime}
-                </td>
-                <td className="whitespace-nowrap border border-slate-200 px-3 py-2 text-center">
-                  <TableNumberBadge tableNumber={order.tableNumber} />
-                </td>
-                <td className="whitespace-nowrap border border-slate-200 px-3 py-2 text-center">
-                  <CategoryBadge category={category} />
-                </td>
-                <td className="border border-slate-200 px-3 py-2 text-slate-900">{menuName}</td>
-                <td className="border border-slate-200 px-3 py-2">
-                  <OrderStatusBadge status={order.status} />
-                </td>
-              </tr>
-            ))}
+            {rows.map(({ key, order, category, menuName }) => {
+              const done = selectedKeys.includes(key)
+              const pulse = pulseKey === key
+              return (
+                <tr
+                  key={key}
+                  role={interactive ? 'button' : undefined}
+                  tabIndex={interactive ? 0 : undefined}
+                  onClick={
+                    interactive
+                      ? () => {
+                          onMenuRowClick?.(key)
+                        }
+                      : undefined
+                  }
+                  onKeyDown={
+                    interactive
+                      ? (e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            onMenuRowClick?.(key)
+                          }
+                        }
+                      : undefined
+                  }
+                  className={`${interactive ? 'cursor-pointer touch-manipulation select-none hover:bg-amber-50/40 active:bg-amber-100/70' : 'hover:bg-slate-50/80'} ${done ? 'bg-emerald-50/80 ring-1 ring-inset ring-emerald-200/60' : ''} ${pulse ? 'animate-pulse bg-rose-100/70' : ''}`}
+                >
+                  <td className="whitespace-nowrap border border-slate-200 px-3 py-2 tabular-nums text-slate-700">
+                    {order.orderTime}
+                  </td>
+                  <td className="whitespace-nowrap border border-slate-200 px-3 py-2 text-center">
+                    <TableNumberBadge tableNumber={order.tableNumber} />
+                  </td>
+                  <td className="whitespace-nowrap border border-slate-200 px-3 py-2 text-center">
+                    <CategoryBadge category={category} />
+                  </td>
+                  <td className="border border-slate-200 px-3 py-2 text-slate-900">{menuName}</td>
+                  <td className="border border-slate-200 px-3 py-2">
+                    <OrderStatusBadge status={order.status} />
+                  </td>
+                </tr>
+              )
+            })}
           </tbody>
         </table>
       </div>
