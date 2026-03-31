@@ -194,9 +194,9 @@ function GamePage() {
         )}
       </svg>
 
-      {/* 설명 카드 — 화면 상단 고정 오버레이 (표·스포트라이트는 아래에서 확인) */}
+      {/* 설명 카드 — 화면 하단에서 100px 위 고정 */}
       <div
-        className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-3 pt-[max(0.75rem,env(safe-area-inset-top))] sm:pt-4"
+        className="pointer-events-none fixed inset-x-0 bottom-[100px] z-50 flex justify-center px-3"
         role="dialog"
         aria-modal="true"
         aria-labelledby="tutorial-step-title"
