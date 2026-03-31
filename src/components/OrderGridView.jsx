@@ -8,7 +8,7 @@ function OrderGridView() {
         <div>
           <h2 className="text-2xl font-bold tracking-tight">주점 주문 관리 POS</h2>
           <p className="mt-1 text-sm text-slate-600">
-            포스기 스타일 테이블 그리드 뷰
+            카테고리별로 구역을 나눈 포스기 스타일 그리드
           </p>
         </div>
         <div className="text-sm text-slate-500">총 {mockOrders.length}건</div>
@@ -29,9 +29,7 @@ function OrderGridView() {
             <div className="space-y-3">
               {getCategoriesWithItems(order).map(({ category, menus }) => (
                 <div key={category}>
-                  <p className="text-sm font-bold uppercase tracking-wide text-slate-500">
-                    {category}
-                  </p>
+                  <p className="text-sm font-bold text-slate-700">{category}</p>
                   <ul className="mt-1 list-none space-y-1">
                     {menus.map((name, idx) => (
                       <li key={`${name}-${idx}`} className={menuChipClass(idx, 'grid')}>
