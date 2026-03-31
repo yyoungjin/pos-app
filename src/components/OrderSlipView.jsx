@@ -10,6 +10,91 @@ function sortByRecentOrder(a, b) {
 
 const PRIORITY_RANK = { FIRST: 1, SECOND: 2, THIRD: 3 }
 
+/** 대기열(메인·사이드·음료) 레인 배경 — 카테고리별 그라데이션 */
+const PENDING_LANE_PANEL = {
+  메인: 'rounded-xl bg-gradient-to-br from-blue-200/55 via-sky-100/40 to-blue-50/30 p-2 ring-1 ring-blue-300/35',
+  사이드: 'rounded-xl bg-gradient-to-br from-orange-200/55 via-amber-100/45 to-orange-50/35 p-2 ring-1 ring-orange-300/35',
+  음료: 'rounded-xl bg-gradient-to-br from-pink-200/50 via-fuchsia-100/40 to-pink-50/35 p-2 ring-1 ring-pink-300/35',
+}
+
+function pendingShellClass(category, priorityRank) {
+  const r = priorityRank
+  if (category === '메인') {
+    if (r === PRIORITY_RANK.FIRST) {
+      return 'border-t-[3px] border-blue-500 bg-gradient-to-b from-blue-200/95 via-sky-100 to-blue-50 ring-blue-300/35 shadow-sm'
+    }
+    if (r === PRIORITY_RANK.SECOND) {
+      return 'border-t-2 border-blue-400/90 bg-gradient-to-b from-blue-100 via-sky-50 to-white ring-blue-200/45'
+    }
+    if (r === PRIORITY_RANK.THIRD) {
+      return 'border-t border-blue-200/70 bg-gradient-to-b from-white via-blue-50/85 to-sky-50/35 ring-blue-200/35'
+    }
+    return 'border-t-0 bg-white ring-blue-200/80'
+  }
+  if (category === '사이드') {
+    if (r === PRIORITY_RANK.FIRST) {
+      return 'border-t-[3px] border-orange-500 bg-gradient-to-b from-orange-200/95 via-amber-100 to-orange-50 ring-orange-300/35 shadow-sm'
+    }
+    if (r === PRIORITY_RANK.SECOND) {
+      return 'border-t-2 border-orange-400/90 bg-gradient-to-b from-orange-100 via-amber-50 to-white ring-orange-200/45'
+    }
+    if (r === PRIORITY_RANK.THIRD) {
+      return 'border-t border-orange-200/75 bg-gradient-to-b from-white via-orange-50/85 to-amber-50/35 ring-orange-200/35'
+    }
+    return 'border-t-0 bg-white ring-orange-200/80'
+  }
+  if (category === '음료') {
+    if (r === PRIORITY_RANK.FIRST) {
+      return 'border-t-[3px] border-fuchsia-500 bg-gradient-to-b from-pink-200/95 via-fuchsia-100 to-pink-50 ring-fuchsia-300/35 shadow-sm'
+    }
+    if (r === PRIORITY_RANK.SECOND) {
+      return 'border-t-2 border-pink-400/90 bg-gradient-to-b from-pink-100 via-fuchsia-50 to-white ring-pink-200/45'
+    }
+    if (r === PRIORITY_RANK.THIRD) {
+      return 'border-t border-pink-200/75 bg-gradient-to-b from-white via-pink-50/85 to-fuchsia-50/35 ring-pink-200/35'
+    }
+    return 'border-t-0 bg-white ring-pink-200/80'
+  }
+  return 'border-t-0 bg-white ring-amber-200/80'
+}
+
+function pendingMetaClass(category, priorityRank) {
+  const r = priorityRank
+  if (category === '메인') {
+    if (r === PRIORITY_RANK.FIRST) return 'text-blue-900/85'
+    if (r === PRIORITY_RANK.SECOND) return 'text-blue-900/90'
+    if (r === PRIORITY_RANK.THIRD) return 'text-slate-600'
+    return 'text-slate-600'
+  }
+  if (category === '사이드') {
+    if (r === PRIORITY_RANK.FIRST) return 'text-orange-900/85'
+    if (r === PRIORITY_RANK.SECOND) return 'text-orange-900/90'
+    if (r === PRIORITY_RANK.THIRD) return 'text-slate-600'
+    return 'text-slate-600'
+  }
+  if (category === '음료') {
+    if (r === PRIORITY_RANK.FIRST) return 'text-fuchsia-900/85'
+    if (r === PRIORITY_RANK.SECOND) return 'text-fuchsia-900/90'
+    if (r === PRIORITY_RANK.THIRD) return 'text-slate-600'
+    return 'text-slate-600'
+  }
+  return 'text-slate-600'
+}
+
+function pendingHoverRingClass(category) {
+  if (category === '메인') return 'hover:ring-blue-400/90'
+  if (category === '사이드') return 'hover:ring-orange-400/90'
+  if (category === '음료') return 'hover:ring-pink-400/90'
+  return 'hover:ring-amber-400/90'
+}
+
+function pendingPulseRingClass(category) {
+  if (category === '메인') return 'ring-blue-500'
+  if (category === '사이드') return 'ring-orange-500'
+  if (category === '음료') return 'ring-fuchsia-500'
+  return 'ring-rose-500'
+}
+
 /** 주문 대기 / 서빙 완료 셀 높이·패딩 공통 (좌우 동일, 뷰포트 높이에 맞춰 clamp) */
 const SLIP_CELL_FRAME = 'h-[clamp(7.25rem,17svh,13.5rem)] shrink-0 px-2.5 py-2'
 
@@ -25,14 +110,7 @@ function QueueCard({
 }) {
   const isPriority = priorityRank >= PRIORITY_RANK.FIRST && priorityRank <= PRIORITY_RANK.THIRD
 
-  const shellClass =
-    priorityRank === PRIORITY_RANK.FIRST
-      ? 'border-t-[3px] border-rose-400 bg-gradient-to-b from-rose-200/95 via-rose-100 to-rose-50 ring-rose-300/35 shadow-sm'
-      : priorityRank === PRIORITY_RANK.SECOND
-        ? 'border-t-2 border-rose-300/90 bg-gradient-to-b from-rose-100 via-rose-50 to-white ring-rose-200/45'
-        : priorityRank === PRIORITY_RANK.THIRD
-          ? 'border-t border-rose-200/70 bg-gradient-to-b from-white via-rose-50/80 to-rose-50/30 ring-rose-200/35'
-          : 'border-t-0 bg-white ring-amber-200/80'
+  const shellClass = pendingShellClass(category, priorityRank)
 
   const bodyTextClass =
     priorityRank === PRIORITY_RANK.FIRST
@@ -50,14 +128,7 @@ function QueueCard({
         ? 'slipRose'
         : 'slipAmber'
 
-  const metaClass =
-    priorityRank === PRIORITY_RANK.FIRST
-      ? 'text-rose-800/80'
-      : priorityRank === PRIORITY_RANK.SECOND
-        ? 'text-rose-800/90'
-        : priorityRank === PRIORITY_RANK.THIRD
-          ? 'text-slate-600'
-          : 'text-slate-600'
+  const metaClass = pendingMetaClass(category, priorityRank)
 
   const lineClamp = isPriority ? '' : 'truncate'
 
@@ -89,7 +160,7 @@ function QueueCard({
                     }
                   : undefined
               }
-              className={`${menuChipClass(idx, menuPalette)} ${lineClamp} ${interactive ? 'cursor-pointer touch-manipulation transition hover:ring-2 hover:ring-amber-400/90' : ''} ${done ? 'ring-2 ring-emerald-500/90' : ''} ${pulse ? 'animate-pulse ring-2 ring-rose-500' : ''}`}
+              className={`${menuChipClass(idx, menuPalette)} ${lineClamp} ${interactive ? `cursor-pointer touch-manipulation transition hover:ring-2 ${pendingHoverRingClass(category)}` : ''} ${done ? 'ring-2 ring-emerald-500/90' : ''} ${pulse ? `animate-pulse ring-2 ${pendingPulseRingClass(category)}` : ''}`}
               title={name}
             >
               {name}
@@ -228,11 +299,11 @@ function PendingTableHeaderRow({ displayPending, gridTemplateColumns, priorityRa
         const rank = priorityRankByOrderId.get(order.id)
         const cellTone =
           rank === PRIORITY_RANK.FIRST
-            ? 'bg-rose-100 text-rose-900 ring-rose-300/40'
+            ? 'bg-slate-200/90 text-slate-900 ring-slate-400/40'
             : rank === PRIORITY_RANK.SECOND
-              ? 'bg-rose-50 text-rose-900 ring-rose-200/45'
+              ? 'bg-slate-100 text-slate-800 ring-slate-300/40'
               : rank === PRIORITY_RANK.THIRD
-                ? 'bg-rose-50/80 text-rose-800 ring-rose-200/40'
+                ? 'bg-slate-50/95 text-slate-700 ring-slate-200/40'
                 : 'bg-amber-200/50 text-amber-950 ring-amber-300/40'
 
         return (
@@ -288,9 +359,27 @@ function PendingLane({
   selectedKeys,
   pulseKey,
 }) {
+  const lanePanel = PENDING_LANE_PANEL[category] ?? 'rounded-xl p-2 ring-1 ring-slate-200/40'
+  const laneTitleClass =
+    category === '메인'
+      ? 'text-sm font-bold tracking-tight text-blue-950'
+      : category === '사이드'
+        ? 'text-sm font-bold tracking-tight text-orange-950'
+        : category === '음료'
+          ? 'text-sm font-bold tracking-tight text-fuchsia-950'
+          : 'text-sm font-bold tracking-tight text-slate-900'
+  const emptyCellClass =
+    category === '메인'
+      ? 'border-blue-300/50 bg-blue-100/20'
+      : category === '사이드'
+        ? 'border-orange-300/50 bg-orange-100/20'
+        : category === '음료'
+          ? 'border-pink-300/50 bg-pink-100/20'
+          : 'border-amber-300/50 bg-amber-100/25'
+
   return (
-    <div className="min-h-0 shrink-0" data-tutorial={dataTutorial}>
-      <h3 className="text-sm font-bold tracking-tight text-slate-900">{category} 대기열</h3>
+    <div className={`min-h-0 shrink-0 ${lanePanel}`} data-tutorial={dataTutorial}>
+      <h3 className={laneTitleClass}>{category} 대기열</h3>
       <div className="mt-1 grid h-full auto-rows-fr gap-1" style={{ gridTemplateColumns }}>
         {displayPending.map((order) => {
           const menus = order.items[category]
@@ -298,7 +387,7 @@ function PendingLane({
             return (
               <div
                 key={order.id}
-                className={`${SLIP_CELL_FRAME} rounded-lg border border-dashed border-amber-300/50 bg-amber-100/25`}
+                className={`${SLIP_CELL_FRAME} rounded-lg border border-dashed ${emptyCellClass}`}
                 aria-hidden
               />
             )
@@ -407,7 +496,7 @@ function OrderSlipView({
       <div className="relative grid min-h-0 flex-1 grid-cols-1 gap-0 overflow-hidden rounded-xl ring-1 ring-slate-200/90 md:grid-cols-[minmax(0,2.1fr)_auto_minmax(0,1fr)]">
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-0 z-0 rounded-xl bg-gradient-to-r from-amber-100/35 via-white to-emerald-100/35 md:from-amber-100/45 md:via-amber-50/20 md:to-emerald-100/45"
+          className="pointer-events-none absolute inset-0 z-0 rounded-xl bg-gradient-to-r from-slate-50/90 via-white to-emerald-50/40 md:from-slate-100/50 md:via-white md:to-emerald-100/35"
         />
         <div
           aria-hidden

@@ -2,12 +2,91 @@ import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import OrderTableView from '../components/OrderTableView'
 import OrderSlipView from '../components/OrderSlipView'
-import { GAME_STAGE_ORDERS, buildClickMission, orderIdAndCategoryFromMenuKey } from '../data/gameStages'
+import {
+  GAME_STAGE_ORDERS,
+  GAME_MISSION_COUNT,
+  GAME_ROUND_COUNT,
+  buildClickMission,
+  orderIdAndCategoryFromMenuKey,
+} from '../data/gameStages'
 
-const STAGE_COUNT = 8
+const ROUND_COUNT = GAME_ROUND_COUNT
 /** 과제 문구를 읽을 수 있도록 뷰 전 8초 대기 */
 const INSTRUCTION_SECONDS = 8
 
+const CATEGORY_BADGE_CLASS = {
+  메인: 'bg-blue-100 text-blue-900 ring-blue-200/80',
+  음료: 'bg-fuchsia-100 text-fuchsia-900 ring-fuchsia-200/80',
+  사이드: 'bg-orange-100 text-orange-900 ring-orange-200/80',
+}
+
+/** 플레이 중 옆 패널: 클릭 순서·현재 단계 표시 */
+function MissionPlaySidebar({ instruction, clickedCount }) {
+  return (
+    <aside
+      className="shrink-0 rounded-2xl border border-slate-200/90 bg-white p-4 shadow-md ring-1 ring-slate-900/5 sm:p-5 lg:sticky lg:top-4 lg:w-[min(100%,19rem)]"
+      aria-label="이번 라운드 과제"
+    >
+      <div className="border-b border-slate-100 pb-3">
+        <p className="text-[11px] font-semibold uppercase tracking-wider text-amber-700">과제</p>
+        <h2 className="mt-1 text-base font-bold tracking-tight text-slate-900">클릭 순서</h2>
+      </div>
+      <p className="mt-3 text-[13px] leading-relaxed text-slate-600 sm:text-sm">{instruction.intro}</p>
+      <ol className="mt-4 space-y-2.5 text-left">
+        {instruction.bullets.map((item, i) => {
+          const done = i < clickedCount
+          const current = i === clickedCount
+          return (
+            <li
+              key={`play-${i}-${item.title}-${item.categoryLabel}`}
+              className={`flex gap-2.5 rounded-xl border px-3 py-2.5 sm:gap-3 sm:px-3.5 sm:py-3 ${
+                done
+                  ? 'border-emerald-200/80 bg-emerald-50/70'
+                  : current
+                    ? 'border-amber-400 bg-amber-50/90 shadow-sm ring-2 ring-amber-300/50'
+                    : 'border-slate-100 bg-slate-50/80'
+              }`}
+            >
+              <span
+                className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-bold sm:h-9 sm:w-9 sm:text-sm ${
+                  done
+                    ? 'bg-emerald-600 text-white ring-2 ring-emerald-400/40'
+                    : current
+                      ? 'bg-amber-500 text-white shadow-sm ring-2 ring-amber-400/40'
+                      : 'bg-slate-300 text-white ring-1 ring-slate-400/30'
+                }`}
+                aria-hidden
+              >
+                {done ? '✓' : i + 1}
+              </span>
+              <div className="min-w-0 flex-1 pt-0.5">
+                <div className="flex flex-wrap items-center gap-1.5">
+                  <span className={`text-sm font-semibold ${done ? 'text-emerald-900' : 'text-slate-900'}`}>
+                    {item.title}
+                  </span>
+                  <span
+                    className={`inline-flex rounded-md px-1.5 py-0.5 text-[11px] font-semibold ring-1 ${CATEGORY_BADGE_CLASS[item.categoryLabel] ?? 'bg-slate-100 text-slate-800 ring-slate-200/80'}`}
+                  >
+                    {item.categoryLabel}
+                  </span>
+                  {current && (
+                    <span className="text-[11px] font-semibold text-amber-800">← 다음</span>
+                  )}
+                </div>
+                <p className="mt-1 text-xs leading-relaxed text-slate-600 sm:text-[13px]">{item.detail}</p>
+              </div>
+            </li>
+          )
+        })}
+      </ol>
+      <p className="mt-4 rounded-lg border border-amber-200/50 bg-amber-50/80 px-3 py-2 text-[11px] leading-relaxed text-amber-950/90 sm:text-xs">
+        <span className="font-semibold text-amber-900">참고.</span> {instruction.note}
+      </p>
+    </aside>
+  )
+}
+
+/** 표 뷰 4회 + 주문서 뷰 4회, 순서만 랜덤 */
 function shuffleTableSlipSequence() {
   const arr = [...Array(4)].map(() => 'table').concat([...Array(4)].map(() => 'slip'))
   for (let i = arr.length - 1; i > 0; i -= 1) {
@@ -17,9 +96,20 @@ function shuffleTableSlipSequence() {
   return arr
 }
 
+/** 과제 4종을 각각 2번씩 총 8라운드에 배치, 순서만 랜덤 */
+function shuffleMissionSequence() {
+  const arr = [0, 1, 2, 3, 0, 1, 2, 3]
+  for (let i = arr.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}
+
 function GamePlayPage() {
   const viewSequence = useMemo(() => shuffleTableSlipSequence(), [])
-  const [stageIndex, setStageIndex] = useState(0)
+  const missionSequence = useMemo(() => shuffleMissionSequence(), [])
+  const [roundIndex, setRoundIndex] = useState(0)
   const [phase, setPhase] = useState('instruction')
   const [countdown, setCountdown] = useState(INSTRUCTION_SECONDS)
   const [clicked, setClicked] = useState([])
@@ -29,10 +119,11 @@ function GamePlayPage() {
   const phaseRef = useRef(phase)
   const stepsRef = useRef([])
 
-  const stageOrders = GAME_STAGE_ORDERS[stageIndex]
-  const view = viewSequence[stageIndex]
-  const mission = useMemo(() => buildClickMission(stageOrders), [stageOrders])
-  const { intent, steps } = mission
+  const missionIdx = missionSequence[roundIndex]
+  const stageOrders = GAME_STAGE_ORDERS[missionIdx]
+  const view = viewSequence[roundIndex]
+  const mission = useMemo(() => buildClickMission(stageOrders, missionIdx), [stageOrders, missionIdx])
+  const { instruction, steps } = mission
 
   useEffect(() => {
     phaseRef.current = phase
@@ -48,7 +139,7 @@ function GamePlayPage() {
     setPulseKey(null)
     setBanner(null)
     setCountdown(INSTRUCTION_SECONDS)
-  }, [stageIndex])
+  }, [roundIndex])
 
   useEffect(() => {
     if (phase !== 'instruction') return
@@ -69,7 +160,7 @@ function GamePlayPage() {
       }
     }, 1000)
     return () => window.clearInterval(id)
-  }, [phase, stageIndex])
+  }, [phase, roundIndex])
 
   const handleMenuClick = useCallback((key) => {
     const k = String(key)
@@ -113,9 +204,9 @@ function GamePlayPage() {
     })
   }, [])
 
-  const goNextStage = () => {
-    if (stageIndex < STAGE_COUNT - 1) {
-      setStageIndex((s) => s + 1)
+  const goNextRound = () => {
+    if (roundIndex < ROUND_COUNT - 1) {
+      setRoundIndex((r) => r + 1)
     }
   }
 
@@ -150,7 +241,10 @@ function GamePlayPage() {
         <h1 className="text-lg font-bold sm:text-xl">주문 파악 게임</h1>
         <div className="flex items-center gap-2 text-sm text-slate-600">
           <span className="tabular-nums">
-            스테이지 {stageIndex + 1} / {STAGE_COUNT}
+            라운드 {roundIndex + 1} / {ROUND_COUNT}
+          </span>
+          <span className="tabular-nums text-slate-500">
+            · 과제 {missionIdx + 1} / {GAME_MISSION_COUNT}
           </span>
           <span className="rounded-full bg-slate-800 px-2.5 py-0.5 text-xs font-semibold text-white">
             {view === 'table' ? '표 뷰' : '주문서 뷰'}
@@ -166,13 +260,45 @@ function GamePlayPage() {
       <div className="relative mx-auto max-w-6xl">
         {phase === 'instruction' && (
           <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/55 px-4 backdrop-blur-sm">
-            <div className="max-w-lg rounded-2xl bg-white px-6 py-8 text-center shadow-2xl ring-1 ring-slate-200">
-              <p className="text-xs font-semibold uppercase tracking-wider text-amber-700">과제</p>
-              <p className="mt-3 whitespace-pre-line text-base font-medium leading-relaxed text-slate-900">
-                {intent}
+            <div className="max-w-xl rounded-2xl bg-white px-6 py-8 shadow-2xl ring-1 ring-slate-200 sm:px-8 sm:py-9">
+              <div className="text-center">
+                <p className="text-xs font-semibold uppercase tracking-wider text-amber-700">과제</p>
+                <h2 className="mt-2 text-lg font-bold tracking-tight text-slate-900 sm:text-xl">클릭 순서</h2>
+              </div>
+              <p className="mt-5 text-left text-[15px] leading-relaxed text-slate-600 sm:text-base">{instruction.intro}</p>
+              <ol className="mt-6 space-y-4 text-left">
+                {instruction.bullets.map((item, i) => (
+                  <li
+                    key={`${i}-${item.title}-${item.categoryLabel}`}
+                    className="flex gap-3.5 rounded-xl border border-slate-100 bg-slate-50/80 px-4 py-3.5 sm:gap-4 sm:px-5 sm:py-4"
+                  >
+                    <span
+                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-amber-500 text-sm font-bold text-white shadow-sm ring-2 ring-amber-400/30 sm:h-10 sm:w-10 sm:text-base"
+                      aria-hidden
+                    >
+                      {i + 1}
+                    </span>
+                    <div className="min-w-0 flex-1 pt-0.5">
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-semibold text-slate-900">{item.title}</span>
+                        <span
+                          className={`inline-flex rounded-md px-2 py-0.5 text-xs font-semibold ring-1 ${CATEGORY_BADGE_CLASS[item.categoryLabel] ?? 'bg-slate-100 text-slate-800 ring-slate-200/80'}`}
+                        >
+                          {item.categoryLabel}
+                        </span>
+                      </div>
+                      <p className="mt-1.5 text-sm leading-relaxed text-slate-600 sm:text-[15px]">{item.detail}</p>
+                    </div>
+                  </li>
+                ))}
+              </ol>
+              <p className="mt-6 rounded-xl border border-amber-200/60 bg-amber-50/90 px-4 py-3 text-left text-sm leading-relaxed text-amber-950/90">
+                <span className="font-semibold text-amber-900">참고.</span> {instruction.note}
               </p>
-              <p className="mt-8 text-5xl font-black tabular-nums text-amber-500">{countdown}</p>
-              <p className="mt-2 text-sm text-slate-500">초 뒤에 주문 화면이 열립니다</p>
+              <div className="mt-8 border-t border-slate-100 pt-6 text-center">
+                <p className="text-5xl font-black tabular-nums text-amber-500">{countdown}</p>
+                <p className="mt-2 text-sm text-slate-500">초 뒤에 주문 화면이 열립니다</p>
+              </div>
             </div>
           </div>
         )}
@@ -182,16 +308,16 @@ function GamePlayPage() {
             <div className="max-w-md rounded-2xl bg-white px-6 py-8 text-center shadow-2xl">
               <p className="text-lg font-bold text-emerald-800">정답입니다!</p>
               <p className="mt-2 text-sm text-slate-600">
-                {stageIndex < STAGE_COUNT - 1 ? '다음 스테이지로 이동합니다.' : '모든 스테이지를 완료했습니다.'}
+                {roundIndex < ROUND_COUNT - 1 ? '다음 라운드로 이동합니다.' : '모든 라운드를 완료했습니다.'}
               </p>
               <div className="mt-6 flex flex-wrap justify-center gap-2">
-                {stageIndex < STAGE_COUNT - 1 ? (
+                {roundIndex < ROUND_COUNT - 1 ? (
                   <button
                     type="button"
-                    onClick={goNextStage}
+                    onClick={goNextRound}
                     className="rounded-xl bg-slate-900 px-6 py-3 text-sm font-semibold text-white hover:bg-slate-800"
                   >
-                    다음 스테이지
+                    다음 라운드
                   </button>
                 ) : (
                   <Link
@@ -206,24 +332,35 @@ function GamePlayPage() {
           </div>
         )}
 
-        <div className={phase === 'play' ? 'relative z-20' : ''}>
-          {view === 'table' ? (
-            <OrderTableView
-              orders={stageOrders}
-              menuNewestFirst={false}
-              interactive={phase === 'play'}
-              onMenuRowClick={handleMenuClick}
-              selectedKeys={clicked}
-              pulseKey={pulseKey}
-            />
-          ) : (
-            <OrderSlipView
-              orders={stageOrders}
-              interactive={phase === 'play'}
-              onMenuClick={handleMenuClick}
-              selectedKeys={clicked}
-              pulseKey={pulseKey}
-            />
+        <div
+          className={
+            phase === 'play'
+              ? 'relative z-20 flex flex-col-reverse gap-4 lg:flex-row lg:items-start lg:gap-5'
+              : ''
+          }
+        >
+          <div className={phase === 'play' ? 'min-w-0 flex-1' : ''}>
+            {view === 'table' ? (
+              <OrderTableView
+                orders={stageOrders}
+                menuNewestFirst={false}
+                interactive={phase === 'play'}
+                onMenuRowClick={handleMenuClick}
+                selectedKeys={clicked}
+                pulseKey={pulseKey}
+              />
+            ) : (
+              <OrderSlipView
+                orders={stageOrders}
+                interactive={phase === 'play'}
+                onMenuClick={handleMenuClick}
+                selectedKeys={clicked}
+                pulseKey={pulseKey}
+              />
+            )}
+          </div>
+          {phase === 'play' && (
+            <MissionPlaySidebar instruction={instruction} clickedCount={clicked.length} />
           )}
         </div>
       </div>
