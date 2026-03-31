@@ -6,7 +6,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<PosViewExperiment />} />
-      <Route path="/game" element={<GamePage />} />
+      <Route path="/tutorial" element={<GamePage />} />
     </Routes>
   )
 }
