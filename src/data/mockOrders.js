@@ -13,6 +13,27 @@ export function getCategoriesWithItems(order) {
   })).filter((row) => row.menus.length > 0)
 }
 
+const MENU_CHIP_WHITE = {
+  slip: 'rounded-md bg-white px-1.5 py-0.5 font-medium text-slate-900 ring-1 ring-slate-200/90',
+  table: 'rounded-md bg-white px-2 py-1 font-medium text-slate-900 ring-1 ring-slate-200/90 shadow-sm',
+  grid: 'rounded-md bg-white px-2 py-1.5 text-base font-medium text-slate-900 ring-1 ring-slate-200/90',
+}
+
+const PALETTE_TO_SHAPE = {
+  slipDark: 'slip',
+  slipRose: 'slip',
+  slipAmber: 'slip',
+  slipEmerald: 'slip',
+  slipServedLight: 'slip',
+  table: 'table',
+  grid: 'grid',
+}
+
+export function menuChipClass(_index, palette) {
+  const shape = PALETTE_TO_SHAPE[palette] ?? 'slip'
+  return MENU_CHIP_WHITE[shape]
+}
+
 export const mockOrders = [
   { id: 1, orderTime: '17:42', tableNumber: '1', status: ORDER_STATUS.SERVED, items: { 메인: ['국물 떡볶이', '우동'], 사이드: ['치즈볼', '감자튀김'], 음료: ['콜라'] } },
   { id: 2, orderTime: '17:45', tableNumber: '2', status: ORDER_STATUS.SERVED, items: { 메인: ['치즈 닭꼬치', '닭강정'], 사이드: ['감자튀김'], 음료: ['사이다', '레몬에이드'] } },

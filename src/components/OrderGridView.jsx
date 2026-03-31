@@ -1,4 +1,4 @@
-import { getCategoriesWithItems, mockOrders } from '../data/mockOrders'
+import { getCategoriesWithItems, menuChipClass, mockOrders } from '../data/mockOrders'
 import OrderStatusBadge from './OrderStatusBadge'
 
 function OrderGridView() {
@@ -33,11 +33,8 @@ function OrderGridView() {
                     {category}
                   </p>
                   <ul className="mt-1 list-none space-y-1">
-                    {menus.map((name) => (
-                      <li
-                        key={name}
-                        className="rounded-md border border-slate-200 bg-white px-2 py-1.5 text-base font-medium text-slate-900"
-                      >
+                    {menus.map((name, idx) => (
+                      <li key={`${name}-${idx}`} className={menuChipClass(idx, 'grid')}>
                         {name}
                       </li>
                     ))}

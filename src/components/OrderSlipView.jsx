@@ -1,4 +1,4 @@
-import { mockOrders, ORDER_CATEGORIES, ORDER_STATUS } from '../data/mockOrders'
+import { menuChipClass, mockOrders, ORDER_CATEGORIES, ORDER_STATUS } from '../data/mockOrders'
 
 function sortByOldestOrder(a, b) {
   return a.orderTime.localeCompare(b.orderTime)
@@ -10,26 +10,20 @@ function sortByRecentOrder(a, b) {
 
 const PRIORITY_RANK = { FIRST: 1, SECOND: 2, THIRD: 3 }
 
+/** 주문 대기 / 서빙 완료 셀 높이·패딩 공통 (좌우 동일, 뷰포트 높이에 맞춰 clamp) */
+const SLIP_CELL_FRAME = 'h-[clamp(7.25rem,17svh,13.5rem)] shrink-0 px-2.5 py-2'
+
 function QueueCard({ order, menus, priorityRank }) {
   const isPriority = priorityRank >= PRIORITY_RANK.FIRST && priorityRank <= PRIORITY_RANK.THIRD
 
   const shellClass =
     priorityRank === PRIORITY_RANK.FIRST
-      ? 'border-t-[3px] border-rose-700 bg-gradient-to-b from-rose-600 via-rose-500 to-rose-400 ring-rose-500/45 shadow-sm'
+      ? 'border-t-[3px] border-rose-400 bg-gradient-to-b from-rose-200/95 via-rose-100 to-rose-50 ring-rose-300/35 shadow-sm'
       : priorityRank === PRIORITY_RANK.SECOND
-        ? 'border-t-2 border-rose-400 bg-gradient-to-b from-rose-300 via-rose-200 to-rose-100 ring-rose-300/50'
+        ? 'border-t-2 border-rose-300/90 bg-gradient-to-b from-rose-100 via-rose-50 to-white ring-rose-200/45'
         : priorityRank === PRIORITY_RANK.THIRD
-          ? 'border-t border-rose-200/80 bg-gradient-to-b from-white via-rose-50/90 to-rose-100/35 ring-rose-200/40'
+          ? 'border-t border-rose-200/70 bg-gradient-to-b from-white via-rose-50/80 to-rose-50/30 ring-rose-200/35'
           : 'border-t-0 bg-white ring-amber-200/80'
-
-  const sizeClass =
-    priorityRank === PRIORITY_RANK.FIRST
-      ? 'min-h-[6.75rem] px-3 py-2.5'
-      : priorityRank === PRIORITY_RANK.SECOND
-        ? 'min-h-[5.85rem] px-2.5 py-2'
-        : priorityRank === PRIORITY_RANK.THIRD
-          ? 'min-h-[5.25rem] px-2.5 py-2'
-          : 'min-h-[2.85rem] px-2 py-1.5'
 
   const bodyTextClass =
     priorityRank === PRIORITY_RANK.FIRST
@@ -40,27 +34,16 @@ function QueueCard({ order, menus, priorityRank }) {
           ? 'text-sm leading-snug'
           : 'text-[13px] leading-snug'
 
-  const labelClass =
+  const menuPalette =
     priorityRank === PRIORITY_RANK.FIRST
-      ? 'text-sm font-extrabold text-white drop-shadow-sm'
-      : priorityRank === PRIORITY_RANK.SECOND
-        ? 'text-xs font-extrabold text-rose-900'
-        : priorityRank === PRIORITY_RANK.THIRD
-          ? 'text-xs font-bold text-rose-600/85'
-          : ''
-
-  const listClass =
-    priorityRank === PRIORITY_RANK.FIRST
-      ? 'text-white/95'
-      : priorityRank === PRIORITY_RANK.SECOND
-        ? 'text-rose-950'
-        : priorityRank === PRIORITY_RANK.THIRD
-          ? 'text-slate-800'
-          : 'text-slate-800'
+      ? 'slipRose'
+      : priorityRank === PRIORITY_RANK.SECOND || priorityRank === PRIORITY_RANK.THIRD
+        ? 'slipRose'
+        : 'slipAmber'
 
   const metaClass =
     priorityRank === PRIORITY_RANK.FIRST
-      ? 'text-rose-100'
+      ? 'text-rose-800/80'
       : priorityRank === PRIORITY_RANK.SECOND
         ? 'text-rose-800/90'
         : priorityRank === PRIORITY_RANK.THIRD
@@ -70,18 +53,22 @@ function QueueCard({ order, menus, priorityRank }) {
   const lineClamp = isPriority ? '' : 'truncate'
 
   return (
-    <article className={`flex h-full min-w-0 flex-col rounded-lg ring-1 ${sizeClass} ${bodyTextClass} ${shellClass}`}>
-      {isPriority && <p className={`mb-1 shrink-0 ${labelClass}`}>우선 처리</p>}
-      <ul className={`list-none space-y-1 ${listClass} min-h-0 flex-1`}>
+    <article
+      className={`flex min-h-0 min-w-0 flex-col rounded-lg ring-1 ${SLIP_CELL_FRAME} ${bodyTextClass} ${shellClass}`}
+    >
+      <ul className="list-none space-y-1 min-h-0 flex-1 overflow-y-auto">
         {menus.map((name, idx) => (
-          <li key={`${name}-${idx}`} className={lineClamp} title={name}>
+          <li
+            key={`${name}-${idx}`}
+            className={`${menuChipClass(idx, menuPalette)} ${lineClamp}`}
+            title={name}
+          >
             {name}
           </li>
         ))}
       </ul>
-      <div className={`mt-auto flex shrink-0 items-center justify-between gap-1 pt-1 text-xs ${metaClass}`}>
-        <span className="font-medium">T{order.tableNumber}</span>
-        <span>{order.orderTime}</span>
+      <div className={`mt-auto shrink-0 pt-1 text-right text-xs tabular-nums ${metaClass}`}>
+        {order.orderTime}
       </div>
     </article>
   )
@@ -93,21 +80,12 @@ function ServedCard({ order, menus, freshRank }) {
 
   const shellClass =
     freshRank === PRIORITY_RANK.FIRST
-      ? 'border-t-[3px] border-emerald-800 bg-gradient-to-b from-emerald-600 via-emerald-500 to-emerald-400 ring-emerald-500/45 shadow-sm'
+      ? 'border-t-[3px] border-emerald-500 bg-gradient-to-b from-emerald-200/95 via-emerald-100 to-emerald-50 ring-emerald-300/35 shadow-sm'
       : freshRank === PRIORITY_RANK.SECOND
-        ? 'border-t-2 border-emerald-500 bg-gradient-to-b from-emerald-300 via-emerald-200 to-emerald-100 ring-emerald-300/50'
+        ? 'border-t-2 border-emerald-400/90 bg-gradient-to-b from-emerald-100 via-emerald-50 to-white ring-emerald-200/45'
         : freshRank === PRIORITY_RANK.THIRD
-          ? 'border-t border-emerald-200/90 bg-gradient-to-b from-white via-emerald-50/95 to-emerald-100/40 ring-emerald-200/45'
+          ? 'border-t border-emerald-200/80 bg-gradient-to-b from-white via-emerald-50/85 to-emerald-50/35 ring-emerald-200/35'
           : 'border-t-0 bg-white ring-emerald-200/80'
-
-  const sizeClass =
-    freshRank === PRIORITY_RANK.FIRST
-      ? 'min-h-[6.75rem] px-3 py-2.5'
-      : freshRank === PRIORITY_RANK.SECOND
-        ? 'min-h-[5.85rem] px-2.5 py-2'
-        : freshRank === PRIORITY_RANK.THIRD
-          ? 'min-h-[5.25rem] px-2.5 py-2'
-          : 'min-h-[2.85rem] px-2 py-1.5'
 
   const bodyTextClass =
     freshRank === PRIORITY_RANK.FIRST
@@ -118,27 +96,16 @@ function ServedCard({ order, menus, freshRank }) {
           ? 'text-sm leading-snug'
           : 'text-[13px] leading-snug'
 
-  const labelClass =
+  const menuPalette =
     freshRank === PRIORITY_RANK.FIRST
-      ? 'text-sm font-extrabold text-white drop-shadow-sm'
-      : freshRank === PRIORITY_RANK.SECOND
-        ? 'text-xs font-extrabold text-emerald-950'
-        : freshRank === PRIORITY_RANK.THIRD
-          ? 'text-xs font-bold text-emerald-700/90'
-          : ''
-
-  const listClass =
-    freshRank === PRIORITY_RANK.FIRST
-      ? 'text-white/95'
-      : freshRank === PRIORITY_RANK.SECOND
-        ? 'text-emerald-950'
-        : freshRank === PRIORITY_RANK.THIRD
-          ? 'text-slate-800'
-          : 'text-slate-800'
+      ? 'slipEmerald'
+      : freshRank === PRIORITY_RANK.SECOND || freshRank === PRIORITY_RANK.THIRD
+        ? 'slipEmerald'
+        : 'slipServedLight'
 
   const metaClass =
     freshRank === PRIORITY_RANK.FIRST
-      ? 'text-emerald-100'
+      ? 'text-emerald-900/80'
       : freshRank === PRIORITY_RANK.SECOND
         ? 'text-emerald-900/90'
         : freshRank === PRIORITY_RANK.THIRD
@@ -148,18 +115,22 @@ function ServedCard({ order, menus, freshRank }) {
   const lineClamp = isFresh ? '' : 'truncate'
 
   return (
-    <article className={`flex h-full min-w-0 flex-col rounded-lg ring-1 ${sizeClass} ${bodyTextClass} ${shellClass}`}>
-      {isFresh && <p className={`mb-1 shrink-0 ${labelClass}`}>방금 완료</p>}
-      <ul className={`list-none space-y-1 ${listClass} min-h-0 flex-1`}>
+    <article
+      className={`flex min-h-0 min-w-0 flex-col rounded-lg ring-1 ${SLIP_CELL_FRAME} ${bodyTextClass} ${shellClass}`}
+    >
+      <ul className="list-none space-y-1 min-h-0 flex-1 overflow-y-auto">
         {menus.map((name, idx) => (
-          <li key={`${name}-${idx}`} className={lineClamp} title={name}>
+          <li
+            key={`${name}-${idx}`}
+            className={`${menuChipClass(idx, menuPalette)} ${lineClamp}`}
+            title={name}
+          >
             {name}
           </li>
         ))}
       </ul>
-      <div className={`mt-auto flex shrink-0 items-center justify-between gap-1 pt-1 text-xs ${metaClass}`}>
-        <span className="font-medium">T{order.tableNumber}</span>
-        <span>{order.orderTime}</span>
+      <div className={`mt-auto shrink-0 pt-1 text-right text-xs tabular-nums ${metaClass}`}>
+        {order.orderTime}
       </div>
     </article>
   )
@@ -197,11 +168,11 @@ function PendingTableHeaderRow({ displayPending, gridTemplateColumns, priorityRa
         const rank = priorityRankByOrderId.get(order.id)
         const cellTone =
           rank === PRIORITY_RANK.FIRST
-            ? 'bg-rose-200/80 text-rose-950 ring-rose-400/50'
+            ? 'bg-rose-100 text-rose-900 ring-rose-300/40'
             : rank === PRIORITY_RANK.SECOND
-              ? 'bg-rose-100/90 text-rose-900 ring-rose-300/45'
+              ? 'bg-rose-50 text-rose-900 ring-rose-200/45'
               : rank === PRIORITY_RANK.THIRD
-                ? 'bg-rose-50 text-rose-800 ring-rose-200/50'
+                ? 'bg-rose-50/80 text-rose-800 ring-rose-200/40'
                 : 'bg-amber-200/50 text-amber-950 ring-amber-300/40'
 
         return (
@@ -226,11 +197,11 @@ function ServedTableHeaderRow({ displayCompleted, gridTemplateColumns, freshRank
         const rank = freshRankByOrderId.get(order.id)
         const cellTone =
           rank === PRIORITY_RANK.FIRST
-            ? 'bg-emerald-300/85 text-emerald-950 ring-emerald-600/40'
+            ? 'bg-emerald-100 text-emerald-900 ring-emerald-400/35'
             : rank === PRIORITY_RANK.SECOND
-              ? 'bg-emerald-200/90 text-emerald-950 ring-emerald-500/35'
+              ? 'bg-emerald-50 text-emerald-900 ring-emerald-300/40'
               : rank === PRIORITY_RANK.THIRD
-                ? 'bg-emerald-100 text-emerald-900 ring-emerald-400/40'
+                ? 'bg-emerald-50/90 text-emerald-800 ring-emerald-200/40'
                 : 'bg-emerald-200/45 text-emerald-950 ring-emerald-300/45'
 
         return (
@@ -257,7 +228,7 @@ function PendingLane({ category, displayPending, priorityRankByOrderId, gridTemp
             return (
               <div
                 key={order.id}
-                className="min-h-[2.85rem] rounded-lg border border-dashed border-amber-300/50 bg-amber-100/25"
+                className={`${SLIP_CELL_FRAME} rounded-lg border border-dashed border-amber-300/50 bg-amber-100/25`}
                 aria-hidden
               />
             )
@@ -287,7 +258,7 @@ function CompletedLane({ category, displayCompleted, freshRankByOrderId, gridTem
             return (
               <div
                 key={order.id}
-                className="min-h-[2.85rem] rounded-lg border border-dashed border-emerald-300/50 bg-emerald-100/25"
+                className={`${SLIP_CELL_FRAME} rounded-lg border border-dashed border-emerald-300/50 bg-emerald-100/25`}
                 aria-hidden
               />
             )
