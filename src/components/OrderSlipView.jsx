@@ -290,14 +290,14 @@ function buildPendingColumnTemplate(columnCount) {
   }).join(' ')
 }
 
-/** 막 처리된 주문 → 왼쪽: 왼쪽 3열 넓게 (대기열과 거울 대칭) */
+/** 서빙 완료 — 패널 너비는 대기와 동일 비율 유지, 내부 열만 대기보다 넓게(가로 스크롤) */
 function buildServedColumnTemplate(columnCount) {
   if (columnCount <= 0) return '1fr'
   return Array.from({ length: columnCount }, (_, colIndex) => {
-    if (colIndex === 0) return 'minmax(7.25rem, 1.55fr)'
-    if (colIndex === 1) return 'minmax(6.5rem, 1.32fr)'
-    if (colIndex === 2) return 'minmax(5.75rem, 1.12fr)'
-    return 'minmax(3.85rem, 0.82fr)'
+    if (colIndex === 0) return 'minmax(8.75rem, 1.85fr)'
+    if (colIndex === 1) return 'minmax(7.75rem, 1.58fr)'
+    if (colIndex === 2) return 'minmax(6.75rem, 1.35fr)'
+    return 'minmax(4.75rem, 1.05fr)'
   }).join(' ')
 }
 
