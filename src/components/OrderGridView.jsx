@@ -3,7 +3,7 @@ import OrderStatusBadge from './OrderStatusBadge'
 
 function OrderGridView() {
   return (
-    <section className="mx-auto w-full max-w-6xl rounded-2xl bg-white p-3 shadow-sm ring-1 ring-slate-200 sm:p-4">
+    <section className="w-full max-w-none rounded-2xl bg-white px-3 py-3 shadow-sm ring-1 ring-slate-200 sm:px-4 sm:py-4">
       <header className="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
           <h2 className="text-2xl font-bold tracking-tight">주점 주문 관리 POS</h2>

@@ -13,8 +13,8 @@ function PosViewExperiment() {
   const [viewType, setViewType] = useState(VIEW_TYPE.GRID)
 
   return (
-    <main className="min-h-screen bg-slate-100 px-2 py-3 text-slate-900 sm:px-3 sm:py-4 lg:px-4">
-      <section className="mx-auto mb-2 flex w-full max-w-6xl items-center justify-between gap-2">
+    <main className="min-h-screen w-full bg-slate-100 px-3 py-3 text-slate-900 sm:px-4 sm:py-4">
+      <section className="mb-2 flex w-full items-center justify-between gap-2">
         <h1 className="text-lg font-bold sm:text-xl">POS UI 비교 실험 - 화면 1/2</h1>
         <div className="inline-flex rounded-lg bg-white p-1 ring-1 ring-slate-200">
           <button

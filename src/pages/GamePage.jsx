@@ -54,7 +54,7 @@ const STEPS_SLIP = [
   },
   {
     title: '테이블 번호 줄',
-    body: '맨 위 T로 시작하는 칸은 테이블 번호입니다.\n아래 각 행의 카드와 세로로 맞춰\n어느 테이블 주문인지 한 줄로 읽을 수 있습니다.',
+    body: '맨 위 행은 각 열의 테이블 번호(예: 테이블 1)를 나타냅니다.\n아래 각 행의 카드와 세로로 맞춰\n어느 테이블 주문인지 한 줄로 읽을 수 있습니다.',
     target: 'slip-pending-header',
   },
   {
@@ -237,8 +237,8 @@ function GamePage() {
     isLastTableStep ? '다음: 주문서 뷰 →' : isLastSlipStep ? '게임 시작 →' : '다음 →'
 
   return (
-    <main className="relative min-h-screen bg-slate-100 px-2 py-3 text-slate-900 sm:px-3 sm:py-4 lg:px-4">
-      <section className="mx-auto mb-2 flex w-full max-w-6xl items-center justify-between gap-2">
+    <main className="relative min-h-screen w-full bg-slate-100 px-3 py-3 text-slate-900 sm:px-4 sm:py-4">
+      <section className="mb-2 flex w-full items-center justify-between gap-2">
         <h1 className="text-lg font-bold sm:text-xl">POS UI 튜토리얼</h1>
         <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">
           {phaseLabel}

@@ -13,16 +13,18 @@ function sortByRecentOrder(a, b) {
 
 const PRIORITY_RANK = { FIRST: 1, SECOND: 2, THIRD: 3 }
 
-/** 대기열(메인·사이드·음료) 레인 배경 — 카테고리별 그라데이션 */
-const PENDING_LANE_PANEL = {
-  메인: 'rounded-xl bg-gradient-to-br from-blue-200/55 via-sky-100/40 to-blue-50/30 p-2 ring-1 ring-blue-300/35',
-  사이드: 'rounded-xl bg-gradient-to-br from-orange-200/55 via-amber-100/45 to-orange-50/35 p-2 ring-1 ring-orange-300/35',
-  음료: 'rounded-xl bg-gradient-to-br from-pink-200/50 via-fuchsia-100/40 to-pink-50/35 p-2 ring-1 ring-pink-300/35',
-}
+/** 테이블(주문) 열 — 주문(테이블)마다 세로로 묶고 테두리로 구분 */
+const PENDING_TABLE_COLUMN_WRAP =
+  'rounded-xl border border-slate-300/80 bg-slate-50/90 px-2.5 py-3 shadow-sm'
+const SERVED_TABLE_COLUMN_WRAP =
+  'rounded-xl border border-emerald-300/80 bg-emerald-50/80 px-2.5 py-3 shadow-sm'
 
-/** 서빙 완료 레인 — 대기열과 동일 패딩·리듬으로 좌우 셀 높이 정렬 */
-const SERVING_LANE_PANEL =
-  'rounded-xl bg-gradient-to-br from-emerald-50/55 via-white to-emerald-50/35 p-2 ring-1 ring-emerald-200/40'
+function emptyPlaceholderClassPending(category) {
+  if (category === '메인') return 'border-blue-300/50 bg-blue-100/20'
+  if (category === '사이드') return 'border-orange-300/50 bg-orange-100/20'
+  if (category === '음료') return 'border-pink-300/50 bg-pink-100/20'
+  return 'border-amber-300/50 bg-amber-100/25'
+}
 
 function pendingShellClass(category, priorityRank) {
   const r = priorityRank
@@ -318,9 +320,9 @@ function PendingTableHeaderRow({ displayPending, gridTemplateColumns, priorityRa
         return (
           <div
             key={order.id}
-            className={`flex min-h-8 min-w-0 items-center justify-center rounded-md px-0.5 text-center text-xs font-extrabold tabular-nums ring-1 ${cellTone}`}
+            className={`flex min-h-8 min-w-0 items-center justify-center whitespace-nowrap rounded-md px-1 text-center text-[11px] font-extrabold leading-tight ring-1 sm:text-xs ${cellTone}`}
           >
-            T{order.tableNumber}
+            테이블 {order.tableNumber}
           </div>
         )
       })}
@@ -347,9 +349,9 @@ function ServedTableHeaderRow({ displayCompleted, gridTemplateColumns, freshRank
         return (
           <div
             key={order.id}
-            className={`flex min-h-8 min-w-0 items-center justify-center rounded-md px-0.5 text-center text-xs font-extrabold tabular-nums ring-1 ${cellTone}`}
+            className={`flex min-h-8 min-w-0 items-center justify-center whitespace-nowrap rounded-md px-1 text-center text-[11px] font-extrabold leading-tight ring-1 sm:text-xs ${cellTone}`}
           >
-            T{order.tableNumber}
+            테이블 {order.tableNumber}
           </div>
         )
       })}
@@ -357,116 +359,112 @@ function ServedTableHeaderRow({ displayCompleted, gridTemplateColumns, freshRank
   )
 }
 
-function PendingLane({
-  category,
+/** 주문(테이블)마다 메인→사이드→음료를 세로로 묶음 */
+function PendingTableColumns({
   displayPending,
   priorityRankByOrderId,
   gridTemplateColumns,
-  dataTutorial,
   interactive,
   onMenuClick,
   selectedKeys,
   pulseKey,
 }) {
-  const lanePanel = PENDING_LANE_PANEL[category] ?? 'rounded-xl p-2 ring-1 ring-slate-200/40'
-  const laneTitleClass =
-    category === '메인'
-      ? 'text-sm font-bold tracking-tight text-blue-950'
-      : category === '사이드'
-        ? 'text-sm font-bold tracking-tight text-orange-950'
-        : category === '음료'
-          ? 'text-sm font-bold tracking-tight text-fuchsia-950'
-          : 'text-sm font-bold tracking-tight text-slate-900'
-  const emptyCellClass =
-    category === '메인'
-      ? 'border-blue-300/50 bg-blue-100/20'
-      : category === '사이드'
-        ? 'border-orange-300/50 bg-orange-100/20'
-        : category === '음료'
-          ? 'border-pink-300/50 bg-pink-100/20'
-          : 'border-amber-300/50 bg-amber-100/25'
+  if (displayPending.length === 0) return null
 
   return (
-    <div className={`min-h-0 shrink-0 ${lanePanel}`} data-tutorial={dataTutorial}>
-      <h3 className={laneTitleClass}>{category} 대기열</h3>
-      <div
-        className={`mt-1 grid h-full auto-rows-fr items-stretch ${SLIP_COLUMN_GAP}`}
-        style={{ gridTemplateColumns }}
-      >
-        {displayPending.map((order) => {
-          const menus = order.items[category]
-          if (!menus?.length) {
+    <div
+      className={`grid min-h-0 auto-rows-min items-stretch ${SLIP_COLUMN_GAP}`}
+      style={{ gridTemplateColumns }}
+    >
+      {displayPending.map((order, colIndex) => (
+        <div
+          key={order.id}
+          data-tutorial={colIndex === 0 ? 'slip-first-lane' : undefined}
+          className={`flex min-h-0 min-w-0 flex-col gap-2 ${PENDING_TABLE_COLUMN_WRAP}`}
+        >
+          {ORDER_CATEGORIES.map((category) => {
+            const menus = order.items[category]
+            const ph = emptyPlaceholderClassPending(category)
             return (
-              <div
-                key={order.id}
-                className={`${SLIP_CELL_FRAME} rounded-lg border border-dashed ${emptyCellClass}`}
-                aria-hidden
-              />
+              <div key={category} className="flex min-h-0 min-w-0 flex-col gap-0.5">
+                <p className="text-[10px] font-bold uppercase tracking-wide text-slate-500">{category}</p>
+                {!menus?.length ? (
+                  <div
+                    className={`${SLIP_CELL_FRAME} rounded-lg border border-dashed ${ph}`}
+                    aria-hidden
+                  />
+                ) : (
+                  <QueueCard
+                    order={order}
+                    menus={menus}
+                    category={category}
+                    priorityRank={priorityRankByOrderId.get(order.id)}
+                    interactive={interactive}
+                    onMenuClick={onMenuClick}
+                    selectedKeys={selectedKeys}
+                    pulseKey={pulseKey}
+                  />
+                )}
+              </div>
             )
-          }
-          return (
-            <QueueCard
-              key={order.id}
-              order={order}
-              menus={menus}
-              category={category}
-              priorityRank={priorityRankByOrderId.get(order.id)}
-              interactive={interactive}
-              onMenuClick={onMenuClick}
-              selectedKeys={selectedKeys}
-              pulseKey={pulseKey}
-            />
-          )
-        })}
-      </div>
+          })}
+        </div>
+      ))}
     </div>
   )
 }
 
-function CompletedLane({
-  category,
+function ServedTableColumns({
   displayCompleted,
   freshRankByOrderId,
   gridTemplateColumns,
-  dataTutorial,
   interactive,
   onMenuClick,
   selectedKeys,
   pulseKey,
 }) {
+  if (displayCompleted.length === 0) return null
+
   return (
-    <div className={`min-h-0 min-w-0 shrink-0 ${SERVING_LANE_PANEL}`} data-tutorial={dataTutorial}>
-      <h3 className="text-sm font-bold tracking-tight text-emerald-950">{category} · 서빙 완료</h3>
-      <div
-        className={`mt-1 grid h-full auto-rows-fr items-stretch ${SLIP_COLUMN_GAP}`}
-        style={{ gridTemplateColumns }}
-      >
-        {displayCompleted.map((order) => {
-          const menus = order.items[category]
-          if (!menus?.length) {
+    <div
+      className={`grid min-h-0 auto-rows-min items-stretch ${SLIP_COLUMN_GAP}`}
+      style={{ gridTemplateColumns }}
+    >
+      {displayCompleted.map((order, colIndex) => (
+        <div
+          key={order.id}
+          data-tutorial={colIndex === 0 ? 'slip-first-served-lane' : undefined}
+          className={`flex min-h-0 min-w-0 flex-col gap-2 ${SERVED_TABLE_COLUMN_WRAP}`}
+        >
+          {ORDER_CATEGORIES.map((category) => {
+            const menus = order.items[category]
             return (
-              <div
-                key={order.id}
-                className={`${SLIP_CELL_FRAME} rounded-lg border border-dashed border-emerald-300/50 bg-emerald-100/25`}
-                aria-hidden
-              />
+              <div key={category} className="flex min-h-0 min-w-0 flex-col gap-0.5">
+                <p className="text-[10px] font-bold uppercase tracking-wide text-emerald-800/80">
+                  {category}
+                </p>
+                {!menus?.length ? (
+                  <div
+                    className={`${SLIP_CELL_FRAME} rounded-lg border border-dashed border-emerald-300/50 bg-emerald-100/25`}
+                    aria-hidden
+                  />
+                ) : (
+                  <ServedCard
+                    order={order}
+                    menus={menus}
+                    category={category}
+                    freshRank={freshRankByOrderId.get(order.id)}
+                    interactive={interactive}
+                    onMenuClick={onMenuClick}
+                    selectedKeys={selectedKeys}
+                    pulseKey={pulseKey}
+                  />
+                )}
+              </div>
             )
-          }
-          return (
-            <ServedCard
-              key={order.id}
-              order={order}
-              menus={menus}
-              category={category}
-              freshRank={freshRankByOrderId.get(order.id)}
-              interactive={interactive}
-              onMenuClick={onMenuClick}
-              selectedKeys={selectedKeys}
-              pulseKey={pulseKey}
-            />
-          )
-        })}
-      </div>
+          })}
+        </div>
+      ))}
     </div>
   )
 }
@@ -499,7 +497,7 @@ function OrderSlipView({
   return (
     <section
       data-tutorial="slip-root"
-      className={`mx-auto flex w-full max-w-6xl min-h-0 flex-col rounded-xl bg-white p-2 shadow-sm ring-1 ring-slate-200 sm:p-2.5 md:h-[min(880px,calc(100svh-8.5rem))] md:overflow-hidden ${interactive ? 'relative z-10' : ''}`}
+      className={`flex min-h-0 w-full max-w-none flex-col rounded-xl bg-white px-2 py-2 shadow-sm ring-1 ring-slate-200 sm:px-3 md:h-[min(880px,calc(100svh-8.5rem))] md:overflow-hidden ${interactive ? 'relative z-10' : ''}`}
     >
       <header className="mb-1.5 flex shrink-0 flex-wrap items-baseline justify-between gap-2">
         <h2 className="text-lg font-bold tracking-tight text-slate-900">주점 주문 관리 POS</h2>
@@ -520,7 +518,7 @@ function OrderSlipView({
 
         <div
           data-tutorial="slip-pending"
-          className="relative z-10 flex min-h-0 min-w-0 flex-col gap-1.5 overflow-x-auto overflow-y-hidden p-2 md:p-2.5"
+          className="relative z-10 flex h-full min-h-0 min-w-0 flex-col gap-1.5 overflow-hidden px-2 py-2 md:px-3 md:py-2.5"
         >
           <p className="shrink-0 text-xs font-bold uppercase tracking-wider text-amber-900/70">
             주문 대기
@@ -532,21 +530,16 @@ function OrderSlipView({
               priorityRankByOrderId={priorityRankByOrderId}
             />
           </div>
-          <div className="flex min-h-0 min-w-0 flex-col gap-8">
-            {ORDER_CATEGORIES.map((category, index) => (
-              <PendingLane
-                key={category}
-                category={category}
-                displayPending={displayPending}
-                priorityRankByOrderId={priorityRankByOrderId}
-                gridTemplateColumns={pendingGridTemplateColumns}
-                dataTutorial={index === 0 ? 'slip-first-lane' : undefined}
-                interactive={interactive}
-                onMenuClick={onMenuClick}
-                selectedKeys={selectedKeys}
-                pulseKey={pulseKey}
-              />
-            ))}
+          <div className="min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-auto">
+            <PendingTableColumns
+              displayPending={displayPending}
+              priorityRankByOrderId={priorityRankByOrderId}
+              gridTemplateColumns={pendingGridTemplateColumns}
+              interactive={interactive}
+              onMenuClick={onMenuClick}
+              selectedKeys={selectedKeys}
+              pulseKey={pulseKey}
+            />
           </div>
         </div>
 
@@ -568,7 +561,7 @@ function OrderSlipView({
 
         <div
           data-tutorial="slip-served"
-          className="relative z-10 flex min-h-0 min-w-0 flex-col gap-1.5 overflow-x-auto overflow-y-hidden border-t border-emerald-200/60 p-2 md:border-t-0 md:border-l md:border-emerald-200/50 md:p-2.5"
+          className="relative z-10 flex h-full min-h-0 min-w-0 flex-col gap-1.5 overflow-hidden border-t border-emerald-200/60 px-2 py-2 md:border-t-0 md:border-l md:border-emerald-200/50 md:px-3 md:py-2.5"
         >
           <p className="shrink-0 text-xs font-bold uppercase tracking-wider text-emerald-900/75">
             서빙 완료
@@ -578,21 +571,16 @@ function OrderSlipView({
             gridTemplateColumns={servedGridTemplateColumns}
             freshRankByOrderId={freshRankByOrderId}
           />
-          <div className="flex min-h-0 min-w-0 flex-col gap-8">
-            {ORDER_CATEGORIES.map((category, index) => (
-              <CompletedLane
-                key={category}
-                category={category}
-                displayCompleted={displayCompleted}
-                freshRankByOrderId={freshRankByOrderId}
-                gridTemplateColumns={servedGridTemplateColumns}
-                dataTutorial={index === 0 ? 'slip-first-served-lane' : undefined}
-                interactive={interactive}
-                onMenuClick={onMenuClick}
-                selectedKeys={selectedKeys}
-                pulseKey={pulseKey}
-              />
-            ))}
+          <div className="min-h-0 min-w-0 flex-1 overflow-y-auto overflow-x-auto">
+            <ServedTableColumns
+              displayCompleted={displayCompleted}
+              freshRankByOrderId={freshRankByOrderId}
+              gridTemplateColumns={servedGridTemplateColumns}
+              interactive={interactive}
+              onMenuClick={onMenuClick}
+              selectedKeys={selectedKeys}
+              pulseKey={pulseKey}
+            />
           </div>
         </div>
       </div>

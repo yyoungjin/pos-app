@@ -236,8 +236,8 @@ function GamePlayPage() {
     ) : null
 
   return (
-    <main className="relative min-h-screen bg-slate-100 px-2 py-3 text-slate-900 sm:px-3 sm:py-4">
-      <header className="mx-auto mb-3 flex w-full max-w-6xl flex-wrap items-center justify-between gap-2">
+    <main className="relative min-h-screen w-full bg-slate-100 px-3 py-2 text-slate-900 sm:px-4 sm:py-3">
+      <header className="mb-2 flex w-full flex-wrap items-center justify-between gap-2 sm:mb-3">
         <h1 className="text-lg font-bold sm:text-xl">주문 파악 게임</h1>
         <div className="flex items-center gap-2 text-sm text-slate-600">
           <span className="tabular-nums">
@@ -257,7 +257,7 @@ function GamePlayPage() {
 
       {playHud}
 
-      <div className="relative mx-auto max-w-6xl">
+      <div className="relative w-full">
         {phase === 'instruction' && (
           <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-slate-900/55 px-4 backdrop-blur-sm">
             <div className="max-w-xl rounded-2xl bg-white px-6 py-8 shadow-2xl ring-1 ring-slate-200 sm:px-8 sm:py-9">
