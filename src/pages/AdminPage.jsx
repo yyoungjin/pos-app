@@ -120,6 +120,37 @@ function FatigueOverviewChart({ users }) {
   )
 }
 
+function FatigueSummaryChart({ users }) {
+  const excelAvg = averageMs(users.map((u) => u.fatigue?.excelView ?? 3))
+  const gridAvg = averageMs(users.map((u) => u.fatigue?.gridView ?? 3))
+
+  return (
+    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+      <h3 className="mb-2 text-sm font-semibold text-slate-800">종료 후 피로도 (전체 유저 평균)</h3>
+      <div className="space-y-2">
+        <div>
+          <div className="mb-1 flex items-center justify-between text-xs text-slate-600">
+            <span>엑셀뷰</span>
+            <span>{excelAvg} / 5</span>
+          </div>
+          <div className="h-2.5 rounded-full bg-slate-200">
+            <div className="h-full rounded-full bg-slate-900" style={{ width: `${(excelAvg / 5) * 100}%` }} />
+          </div>
+        </div>
+        <div>
+          <div className="mb-1 flex items-center justify-between text-xs text-slate-600">
+            <span>그리드뷰</span>
+            <span>{gridAvg} / 5</span>
+          </div>
+          <div className="h-2.5 rounded-full bg-slate-200">
+            <div className="h-full rounded-full bg-green-600" style={{ width: `${(gridAvg / 5) * 100}%` }} />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function AdminPage() {
   const [viewMode, setViewMode] = useState('table')
 
@@ -141,6 +172,31 @@ function AdminPage() {
       }
     })
   }, [])
+
+  const summaryByTask = useMemo(() => {
+    return TASK_ORDER.map((taskId) => {
+      const rows = users.flatMap((u) => u.quizSequence).filter((r) => r.taskId === taskId)
+      return {
+        key: taskId,
+        label: taskId,
+        excelValue: averageMs(rows.map((r) => r.excelView.responseTimeMs)),
+        gridValue: averageMs(rows.map((r) => r.gridView.responseTimeMs)),
+      }
+    })
+  }, [users])
+
+  const summaryByRound = useMemo(() => {
+    const maxRound = Math.max(...users.map((u) => u.quizSequence.length))
+    return Array.from({ length: maxRound }, (_, idx) => idx + 1).map((round) => {
+      const rows = users.flatMap((u) => u.quizSequence).filter((r) => r.round === round)
+      return {
+        key: `round-${round}`,
+        label: `R${round}`,
+        excelValue: averageMs(rows.map((r) => r.excelView.responseTimeMs)),
+        gridValue: averageMs(rows.map((r) => r.gridView.responseTimeMs)),
+      }
+    })
+  }, [users])
 
   return (
     <main className="min-h-screen w-full bg-slate-100 px-3 py-3 text-slate-900 sm:px-4 sm:py-4">
@@ -197,6 +253,15 @@ function AdminPage() {
           >
             피로도 보기
           </button>
+          <button
+            type="button"
+            onClick={() => setViewMode('summary')}
+            className={`rounded-md px-3 py-1.5 text-sm font-medium ${
+              viewMode === 'summary' ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-200/70'
+            }`}
+          >
+            종합 보기
+          </button>
         </div>
       </section>
 
@@ -252,6 +317,28 @@ function AdminPage() {
         <section className="space-y-3">
           <article className="rounded-xl bg-white p-4 ring-1 ring-slate-200">
             <FatigueOverviewChart users={users} />
+          </article>
+        </section>
+      )}
+
+      {viewMode === 'summary' && (
+        <section className="space-y-3">
+          <article className="rounded-xl bg-white p-4 ring-1 ring-slate-200">
+            <h2 className="mb-2 text-base font-bold text-slate-900">종합 결과 (전체 유저 통합)</h2>
+            <div className="grid gap-3 lg:grid-cols-2">
+              <div>
+                <h3 className="mb-1 text-sm font-semibold text-slate-800">1. 문제번호 순서 그래프</h3>
+                <TrendChart points={summaryByTask} xLabel="문제번호(T01~T06)" />
+              </div>
+              <div>
+                <h3 className="mb-1 text-sm font-semibold text-slate-800">2. 풀이순서 그래프</h3>
+                <TrendChart points={summaryByRound} xLabel="풀이순서(라운드 1~6)" />
+              </div>
+            </div>
+            <div className="mt-3">
+              <h3 className="mb-1 text-sm font-semibold text-slate-800">3. 피로도</h3>
+              <FatigueSummaryChart users={users} />
+            </div>
           </article>
         </section>
       )}
