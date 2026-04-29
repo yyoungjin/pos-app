@@ -79,6 +79,47 @@ function TrendChart({ points, xLabel }) {
   )
 }
 
+function FatigueOverviewChart({ users }) {
+  const points = users.map((user) => ({
+    key: user.userId,
+    label: user.userId,
+    excelValue: Math.max(1, Math.min(5, user.fatigue?.excelView ?? 3)),
+    gridValue: Math.max(1, Math.min(5, user.fatigue?.gridView ?? 3)),
+  }))
+  const width = 640
+  const height = 180
+  const excel = points.map((p) => p.excelValue)
+  const grid = points.map((p) => p.gridValue)
+  const excelPath = buildLinePath(excel, width, height, 1, 5)
+  const gridPath = buildLinePath(grid, width, height, 1, 5)
+
+  return (
+    <div className="rounded-xl border border-slate-200 bg-slate-50 p-3">
+      <h3 className="mb-2 text-sm font-semibold text-slate-800">종료 후 피로도 그래프 (1~5)</h3>
+      <svg viewBox={`0 0 ${width} ${height}`} className="h-40 w-full">
+        <path d={excelPath} fill="none" stroke="#0f172a" strokeWidth="2.5" strokeDasharray="6 4" />
+        <path d={gridPath} fill="none" stroke="#16a34a" strokeWidth="2.5" />
+      </svg>
+      <div className="mt-2 flex items-center gap-3 text-xs text-slate-600">
+        <span className="inline-flex items-center gap-1">
+          <span className="inline-block h-0.5 w-5 bg-slate-900" />
+          엑셀뷰 피로도
+        </span>
+        <span className="inline-flex items-center gap-1">
+          <span className="inline-block h-0.5 w-5 bg-green-600" />
+          그리드뷰 피로도
+        </span>
+      </div>
+      <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-xs text-slate-500">
+        {points.map((p) => (
+          <span key={`f-${p.key}`}>{p.label}</span>
+        ))}
+      </div>
+      <div className="mt-1 text-xs text-slate-500">x축: 유저, y축: 피로도(1~5)</div>
+    </div>
+  )
+}
+
 function AdminPage() {
   const [viewMode, setViewMode] = useState('table')
 
@@ -147,6 +188,15 @@ function AdminPage() {
           >
             그래프 보기
           </button>
+          <button
+            type="button"
+            onClick={() => setViewMode('fatigue')}
+            className={`rounded-md px-3 py-1.5 text-sm font-medium ${
+              viewMode === 'fatigue' ? 'bg-slate-900 text-white' : 'text-slate-700 hover:bg-slate-200/70'
+            }`}
+          >
+            피로도 보기
+          </button>
         </div>
       </section>
 
@@ -195,6 +245,14 @@ function AdminPage() {
               </div>
             </article>
           ))}
+        </section>
+      )}
+
+      {viewMode === 'fatigue' && (
+        <section className="space-y-3">
+          <article className="rounded-xl bg-white p-4 ring-1 ring-slate-200">
+            <FatigueOverviewChart users={users} />
+          </article>
         </section>
       )}
 

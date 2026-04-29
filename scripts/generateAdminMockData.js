@@ -112,6 +112,10 @@ function generateUserData(user) {
     userId: user.userId,
     participantGroup: user.participantGroup,
     quizSequence,
+    fatigue: {
+      excelView: randomInt(1, 5),
+      gridView: randomInt(1, 5),
+    },
   }
 }
 

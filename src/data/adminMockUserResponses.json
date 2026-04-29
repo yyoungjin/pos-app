@@ -8,80 +8,84 @@
         "taskId": "T05",
         "taskLabel": "테이블 2의 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 6088,
-          "misclickCount": 4
+          "responseTimeMs": 5749,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 5289,
-          "misclickCount": 4
+          "responseTimeMs": 5743,
+          "misclickCount": 2
         }
       },
       {
         "round": 2,
-        "taskId": "T04",
-        "taskLabel": "가장 오래 대기한 주문 찾기",
+        "taskId": "T02",
+        "taskLabel": "테이블 4의 음료 선택",
         "excelView": {
-          "responseTimeMs": 6928,
-          "misclickCount": 5
+          "responseTimeMs": 6155,
+          "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 6299,
-          "misclickCount": 6
+          "responseTimeMs": 5642,
+          "misclickCount": 2
         }
       },
       {
         "round": 3,
-        "taskId": "T06",
-        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
+        "taskId": "T03",
+        "taskLabel": "서빙 완료된 사이드 찾기",
         "excelView": {
-          "responseTimeMs": 7856,
-          "misclickCount": 4
+          "responseTimeMs": 6845,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 7056,
-          "misclickCount": 5
+          "responseTimeMs": 7457,
+          "misclickCount": 2
         }
       },
       {
         "round": 4,
-        "taskId": "T01",
-        "taskLabel": "가장 최근 메인 메뉴 찾기",
+        "taskId": "T04",
+        "taskLabel": "가장 오래 대기한 주문 찾기",
         "excelView": {
-          "responseTimeMs": 4978,
+          "responseTimeMs": 6752,
           "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 5076,
-          "misclickCount": 3
+          "responseTimeMs": 6607,
+          "misclickCount": 2
         }
       },
       {
         "round": 5,
-        "taskId": "T02",
-        "taskLabel": "테이블 4의 음료 선택",
+        "taskId": "T01",
+        "taskLabel": "가장 최근 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 5577,
-          "misclickCount": 1
+          "responseTimeMs": 5186,
+          "misclickCount": 0
         },
         "gridView": {
-          "responseTimeMs": 5750,
-          "misclickCount": 2
+          "responseTimeMs": 4840,
+          "misclickCount": 0
         }
       },
       {
         "round": 6,
-        "taskId": "T03",
-        "taskLabel": "서빙 완료된 사이드 찾기",
+        "taskId": "T06",
+        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
         "excelView": {
-          "responseTimeMs": 7071,
-          "misclickCount": 3
+          "responseTimeMs": 7286,
+          "misclickCount": 0
         },
         "gridView": {
-          "responseTimeMs": 6659,
-          "misclickCount": 3
+          "responseTimeMs": 6896,
+          "misclickCount": 1
         }
       }
-    ]
+    ],
+    "fatigue": {
+      "excelView": 1,
+      "gridView": 1
+    }
   },
   {
     "userId": "U-002",
@@ -89,14 +93,14 @@
     "quizSequence": [
       {
         "round": 1,
-        "taskId": "T04",
-        "taskLabel": "가장 오래 대기한 주문 찾기",
+        "taskId": "T03",
+        "taskLabel": "서빙 완료된 사이드 찾기",
         "excelView": {
-          "responseTimeMs": 6180,
+          "responseTimeMs": 7441,
           "misclickCount": 5
         },
         "gridView": {
-          "responseTimeMs": 6784,
+          "responseTimeMs": 6991,
           "misclickCount": 5
         }
       },
@@ -105,38 +109,38 @@
         "taskId": "T02",
         "taskLabel": "테이블 4의 음료 선택",
         "excelView": {
-          "responseTimeMs": 5753,
-          "misclickCount": 3
+          "responseTimeMs": 5663,
+          "misclickCount": 4
         },
         "gridView": {
-          "responseTimeMs": 5311,
+          "responseTimeMs": 6084,
           "misclickCount": 5
         }
       },
       {
         "round": 3,
-        "taskId": "T01",
-        "taskLabel": "가장 최근 메인 메뉴 찾기",
+        "taskId": "T05",
+        "taskLabel": "테이블 2의 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 5105,
+          "responseTimeMs": 5441,
           "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 4494,
-          "misclickCount": 3
+          "responseTimeMs": 5883,
+          "misclickCount": 4
         }
       },
       {
         "round": 4,
-        "taskId": "T03",
-        "taskLabel": "서빙 완료된 사이드 찾기",
+        "taskId": "T01",
+        "taskLabel": "가장 최근 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 6596,
-          "misclickCount": 4
+          "responseTimeMs": 5277,
+          "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 6843,
-          "misclickCount": 5
+          "responseTimeMs": 4892,
+          "misclickCount": 3
         }
       },
       {
@@ -144,28 +148,32 @@
         "taskId": "T06",
         "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
         "excelView": {
-          "responseTimeMs": 7212,
+          "responseTimeMs": 7189,
           "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 6613,
+          "responseTimeMs": 6971,
           "misclickCount": 4
         }
       },
       {
         "round": 6,
-        "taskId": "T05",
-        "taskLabel": "테이블 2의 메인 메뉴 찾기",
+        "taskId": "T04",
+        "taskLabel": "가장 오래 대기한 주문 찾기",
         "excelView": {
-          "responseTimeMs": 5092,
-          "misclickCount": 1
+          "responseTimeMs": 6082,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 5431,
+          "responseTimeMs": 6751,
           "misclickCount": 3
         }
       }
-    ]
+    ],
+    "fatigue": {
+      "excelView": 3,
+      "gridView": 3
+    }
   },
   {
     "userId": "U-003",
@@ -173,67 +181,67 @@
     "quizSequence": [
       {
         "round": 1,
-        "taskId": "T01",
-        "taskLabel": "가장 최근 메인 메뉴 찾기",
+        "taskId": "T02",
+        "taskLabel": "테이블 4의 음료 선택",
         "excelView": {
-          "responseTimeMs": 4995,
-          "misclickCount": 2
+          "responseTimeMs": 5934,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 5693,
+          "responseTimeMs": 5579,
           "misclickCount": 3
         }
       },
       {
         "round": 2,
-        "taskId": "T05",
-        "taskLabel": "테이블 2의 메인 메뉴 찾기",
+        "taskId": "T06",
+        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
         "excelView": {
-          "responseTimeMs": 5725,
-          "misclickCount": 2
+          "responseTimeMs": 7429,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 6198,
-          "misclickCount": 2
+          "responseTimeMs": 6984,
+          "misclickCount": 5
         }
       },
       {
         "round": 3,
-        "taskId": "T02",
-        "taskLabel": "테이블 4의 음료 선택",
+        "taskId": "T01",
+        "taskLabel": "가장 최근 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 5989,
-          "misclickCount": 0
-        },
-        "gridView": {
-          "responseTimeMs": 5761,
+          "responseTimeMs": 5364,
           "misclickCount": 1
-        }
-      },
-      {
-        "round": 4,
-        "taskId": "T06",
-        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
-        "excelView": {
-          "responseTimeMs": 7440,
-          "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 7375,
+          "responseTimeMs": 5022,
           "misclickCount": 3
         }
       },
       {
-        "round": 5,
+        "round": 4,
         "taskId": "T04",
         "taskLabel": "가장 오래 대기한 주문 찾기",
         "excelView": {
-          "responseTimeMs": 6240,
-          "misclickCount": 0
+          "responseTimeMs": 6548,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 6875,
+          "responseTimeMs": 6183,
+          "misclickCount": 4
+        }
+      },
+      {
+        "round": 5,
+        "taskId": "T05",
+        "taskLabel": "테이블 2의 메인 메뉴 찾기",
+        "excelView": {
+          "responseTimeMs": 5692,
           "misclickCount": 1
+        },
+        "gridView": {
+          "responseTimeMs": 5268,
+          "misclickCount": 2
         }
       },
       {
@@ -241,15 +249,19 @@
         "taskId": "T03",
         "taskLabel": "서빙 완료된 사이드 찾기",
         "excelView": {
-          "responseTimeMs": 7072,
-          "misclickCount": 1
+          "responseTimeMs": 7033,
+          "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 6829,
-          "misclickCount": 2
+          "responseTimeMs": 6504,
+          "misclickCount": 3
         }
       }
-    ]
+    ],
+    "fatigue": {
+      "excelView": 4,
+      "gridView": 2
+    }
   },
   {
     "userId": "U-004",
@@ -257,14 +269,14 @@
     "quizSequence": [
       {
         "round": 1,
-        "taskId": "T03",
-        "taskLabel": "서빙 완료된 사이드 찾기",
+        "taskId": "T01",
+        "taskLabel": "가장 최근 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 7411,
-          "misclickCount": 3
+          "responseTimeMs": 5525,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 7649,
+          "responseTimeMs": 4943,
           "misclickCount": 3
         }
       },
@@ -273,12 +285,12 @@
         "taskId": "T05",
         "taskLabel": "테이블 2의 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 5903,
-          "misclickCount": 1
+          "responseTimeMs": 5096,
+          "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 5665,
-          "misclickCount": 3
+          "responseTimeMs": 5635,
+          "misclickCount": 2
         }
       },
       {
@@ -286,54 +298,58 @@
         "taskId": "T06",
         "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
         "excelView": {
-          "responseTimeMs": 7713,
-          "misclickCount": 1
+          "responseTimeMs": 7401,
+          "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 7226,
-          "misclickCount": 2
+          "responseTimeMs": 7028,
+          "misclickCount": 3
         }
       },
       {
         "round": 4,
-        "taskId": "T01",
-        "taskLabel": "가장 최근 메인 메뉴 찾기",
+        "taskId": "T02",
+        "taskLabel": "테이블 4의 음료 선택",
         "excelView": {
-          "responseTimeMs": 5410,
-          "misclickCount": 0
+          "responseTimeMs": 5964,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 5092,
-          "misclickCount": 2
+          "responseTimeMs": 5759,
+          "misclickCount": 1
         }
       },
       {
         "round": 5,
-        "taskId": "T04",
-        "taskLabel": "가장 오래 대기한 주문 찾기",
+        "taskId": "T03",
+        "taskLabel": "서빙 완료된 사이드 찾기",
         "excelView": {
-          "responseTimeMs": 6626,
-          "misclickCount": 1
+          "responseTimeMs": 6704,
+          "misclickCount": 0
         },
         "gridView": {
-          "responseTimeMs": 6545,
+          "responseTimeMs": 6947,
           "misclickCount": 2
         }
       },
       {
         "round": 6,
-        "taskId": "T02",
-        "taskLabel": "테이블 4의 음료 선택",
+        "taskId": "T04",
+        "taskLabel": "가장 오래 대기한 주문 찾기",
         "excelView": {
-          "responseTimeMs": 5445,
-          "misclickCount": 0
+          "responseTimeMs": 6527,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 5962,
+          "responseTimeMs": 5971,
           "misclickCount": 1
         }
       }
-    ]
+    ],
+    "fatigue": {
+      "excelView": 4,
+      "gridView": 2
+    }
   },
   {
     "userId": "U-005",
@@ -344,80 +360,84 @@
         "taskId": "T03",
         "taskLabel": "서빙 완료된 사이드 찾기",
         "excelView": {
-          "responseTimeMs": 7433,
-          "misclickCount": 2
+          "responseTimeMs": 6610,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 6996,
-          "misclickCount": 3
+          "responseTimeMs": 6859,
+          "misclickCount": 5
         }
       },
       {
         "round": 2,
-        "taskId": "T04",
-        "taskLabel": "가장 오래 대기한 주문 찾기",
+        "taskId": "T05",
+        "taskLabel": "테이블 2의 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 6662,
+          "responseTimeMs": 5522,
           "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 6099,
+          "responseTimeMs": 4963,
           "misclickCount": 3
         }
       },
       {
         "round": 3,
-        "taskId": "T06",
-        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
+        "taskId": "T01",
+        "taskLabel": "가장 최근 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 7337,
-          "misclickCount": 1
+          "responseTimeMs": 4747,
+          "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 7104,
-          "misclickCount": 3
+          "responseTimeMs": 4725,
+          "misclickCount": 2
         }
       },
       {
         "round": 4,
-        "taskId": "T02",
-        "taskLabel": "테이블 4의 음료 선택",
+        "taskId": "T06",
+        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
         "excelView": {
-          "responseTimeMs": 5549,
-          "misclickCount": 0
+          "responseTimeMs": 7191,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 5332,
-          "misclickCount": 1
+          "responseTimeMs": 6411,
+          "misclickCount": 3
         }
       },
       {
         "round": 5,
-        "taskId": "T01",
-        "taskLabel": "가장 최근 메인 메뉴 찾기",
+        "taskId": "T04",
+        "taskLabel": "가장 오래 대기한 주문 찾기",
         "excelView": {
-          "responseTimeMs": 4297,
-          "misclickCount": 0
+          "responseTimeMs": 5949,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 4702,
-          "misclickCount": 1
+          "responseTimeMs": 5887,
+          "misclickCount": 3
         }
       },
       {
         "round": 6,
-        "taskId": "T05",
-        "taskLabel": "테이블 2의 메인 메뉴 찾기",
+        "taskId": "T02",
+        "taskLabel": "테이블 4의 음료 선택",
         "excelView": {
-          "responseTimeMs": 4657,
+          "responseTimeMs": 5080,
           "misclickCount": 0
         },
         "gridView": {
-          "responseTimeMs": 5053,
-          "misclickCount": 1
+          "responseTimeMs": 5214,
+          "misclickCount": 2
         }
       }
-    ]
+    ],
+    "fatigue": {
+      "excelView": 3,
+      "gridView": 1
+    }
   },
   {
     "userId": "U-006",
@@ -425,15 +445,15 @@
     "quizSequence": [
       {
         "round": 1,
-        "taskId": "T05",
-        "taskLabel": "테이블 2의 메인 메뉴 찾기",
+        "taskId": "T01",
+        "taskLabel": "가장 최근 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 4669,
-          "misclickCount": 3
+          "responseTimeMs": 4348,
+          "misclickCount": 4
         },
         "gridView": {
-          "responseTimeMs": 5446,
-          "misclickCount": 3
+          "responseTimeMs": 4730,
+          "misclickCount": 5
         }
       },
       {
@@ -441,51 +461,51 @@
         "taskId": "T02",
         "taskLabel": "테이블 4의 음료 선택",
         "excelView": {
-          "responseTimeMs": 5574,
-          "misclickCount": 2
+          "responseTimeMs": 5348,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 5017,
-          "misclickCount": 3
+          "responseTimeMs": 5077,
+          "misclickCount": 5
         }
       },
       {
         "round": 3,
-        "taskId": "T04",
-        "taskLabel": "가장 오래 대기한 주문 찾기",
+        "taskId": "T03",
+        "taskLabel": "서빙 완료된 사이드 찾기",
         "excelView": {
-          "responseTimeMs": 5985,
-          "misclickCount": 2
+          "responseTimeMs": 6719,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 5957,
-          "misclickCount": 3
+          "responseTimeMs": 6601,
+          "misclickCount": 4
         }
       },
       {
         "round": 4,
-        "taskId": "T03",
-        "taskLabel": "서빙 완료된 사이드 찾기",
+        "taskId": "T05",
+        "taskLabel": "테이블 2의 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 6801,
+          "responseTimeMs": 5025,
           "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 6276,
+          "responseTimeMs": 4612,
           "misclickCount": 3
         }
       },
       {
         "round": 5,
-        "taskId": "T01",
-        "taskLabel": "가장 최근 메인 메뉴 찾기",
+        "taskId": "T04",
+        "taskLabel": "가장 오래 대기한 주문 찾기",
         "excelView": {
-          "responseTimeMs": 4681,
-          "misclickCount": 1
+          "responseTimeMs": 5958,
+          "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 3950,
-          "misclickCount": 2
+          "responseTimeMs": 5583,
+          "misclickCount": 3
         }
       },
       {
@@ -493,15 +513,19 @@
         "taskId": "T06",
         "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
         "excelView": {
-          "responseTimeMs": 6647,
-          "misclickCount": 1
+          "responseTimeMs": 6594,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 6238,
-          "misclickCount": 3
+          "responseTimeMs": 6030,
+          "misclickCount": 4
         }
       }
-    ]
+    ],
+    "fatigue": {
+      "excelView": 5,
+      "gridView": 1
+    }
   },
   {
     "userId": "U-007",
@@ -509,28 +533,28 @@
     "quizSequence": [
       {
         "round": 1,
-        "taskId": "T03",
-        "taskLabel": "서빙 완료된 사이드 찾기",
+        "taskId": "T04",
+        "taskLabel": "가장 오래 대기한 주문 찾기",
         "excelView": {
-          "responseTimeMs": 7647,
-          "misclickCount": 4
+          "responseTimeMs": 6265,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 7360,
-          "misclickCount": 4
+          "responseTimeMs": 5344,
+          "misclickCount": 3
         }
       },
       {
         "round": 2,
-        "taskId": "T02",
-        "taskLabel": "테이블 4의 음료 선택",
+        "taskId": "T03",
+        "taskLabel": "서빙 완료된 사이드 찾기",
         "excelView": {
-          "responseTimeMs": 5575,
+          "responseTimeMs": 6572,
           "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 6243,
-          "misclickCount": 4
+          "responseTimeMs": 6168,
+          "misclickCount": 3
         }
       },
       {
@@ -538,54 +562,58 @@
         "taskId": "T01",
         "taskLabel": "가장 최근 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 5461,
-          "misclickCount": 2
+          "responseTimeMs": 4106,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 4983,
-          "misclickCount": 2
+          "responseTimeMs": 4254,
+          "misclickCount": 1
         }
       },
       {
         "round": 4,
-        "taskId": "T05",
-        "taskLabel": "테이블 2의 메인 메뉴 찾기",
-        "excelView": {
-          "responseTimeMs": 5255,
-          "misclickCount": 2
-        },
-        "gridView": {
-          "responseTimeMs": 5894,
-          "misclickCount": 2
-        }
-      },
-      {
-        "round": 5,
         "taskId": "T06",
         "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
         "excelView": {
-          "responseTimeMs": 7435,
+          "responseTimeMs": 6440,
           "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 7051,
+          "responseTimeMs": 6201,
           "misclickCount": 3
         }
       },
       {
-        "round": 6,
-        "taskId": "T04",
-        "taskLabel": "가장 오래 대기한 주문 찾기",
+        "round": 5,
+        "taskId": "T05",
+        "taskLabel": "테이블 2의 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 6578,
-          "misclickCount": 2
+          "responseTimeMs": 4731,
+          "misclickCount": 0
         },
         "gridView": {
-          "responseTimeMs": 6247,
-          "misclickCount": 2
+          "responseTimeMs": 4310,
+          "misclickCount": 0
+        }
+      },
+      {
+        "round": 6,
+        "taskId": "T02",
+        "taskLabel": "테이블 4의 음료 선택",
+        "excelView": {
+          "responseTimeMs": 4796,
+          "misclickCount": 0
+        },
+        "gridView": {
+          "responseTimeMs": 4620,
+          "misclickCount": 0
         }
       }
-    ]
+    ],
+    "fatigue": {
+      "excelView": 4,
+      "gridView": 1
+    }
   },
   {
     "userId": "U-008",
@@ -593,54 +621,54 @@
     "quizSequence": [
       {
         "round": 1,
-        "taskId": "T03",
-        "taskLabel": "서빙 완료된 사이드 찾기",
+        "taskId": "T04",
+        "taskLabel": "가장 오래 대기한 주문 찾기",
         "excelView": {
-          "responseTimeMs": 7432,
-          "misclickCount": 5
+          "responseTimeMs": 6429,
+          "misclickCount": 4
         },
         "gridView": {
-          "responseTimeMs": 6962,
-          "misclickCount": 5
+          "responseTimeMs": 6180,
+          "misclickCount": 4
         }
       },
       {
         "round": 2,
-        "taskId": "T02",
-        "taskLabel": "테이블 4의 음료 선택",
+        "taskId": "T06",
+        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
         "excelView": {
-          "responseTimeMs": 6351,
+          "responseTimeMs": 7517,
           "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 5838,
-          "misclickCount": 4
+          "responseTimeMs": 6816,
+          "misclickCount": 5
         }
       },
       {
         "round": 3,
-        "taskId": "T06",
-        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
+        "taskId": "T02",
+        "taskLabel": "테이블 4의 음료 선택",
         "excelView": {
-          "responseTimeMs": 7254,
-          "misclickCount": 3
+          "responseTimeMs": 6036,
+          "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 7583,
-          "misclickCount": 4
+          "responseTimeMs": 5647,
+          "misclickCount": 3
         }
       },
       {
         "round": 4,
-        "taskId": "T01",
-        "taskLabel": "가장 최근 메인 메뉴 찾기",
+        "taskId": "T03",
+        "taskLabel": "서빙 완료된 사이드 찾기",
         "excelView": {
-          "responseTimeMs": 5060,
-          "misclickCount": 3
+          "responseTimeMs": 7048,
+          "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 4852,
-          "misclickCount": 4
+          "responseTimeMs": 6981,
+          "misclickCount": 3
         }
       },
       {
@@ -648,28 +676,32 @@
         "taskId": "T05",
         "taskLabel": "테이블 2의 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 5293,
-          "misclickCount": 1
+          "responseTimeMs": 5536,
+          "misclickCount": 0
         },
         "gridView": {
-          "responseTimeMs": 5393,
-          "misclickCount": 3
+          "responseTimeMs": 5210,
+          "misclickCount": 2
         }
       },
       {
         "round": 6,
-        "taskId": "T04",
-        "taskLabel": "가장 오래 대기한 주문 찾기",
+        "taskId": "T01",
+        "taskLabel": "가장 최근 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 6046,
-          "misclickCount": 3
+          "responseTimeMs": 4884,
+          "misclickCount": 0
         },
         "gridView": {
-          "responseTimeMs": 6398,
-          "misclickCount": 3
+          "responseTimeMs": 4505,
+          "misclickCount": 1
         }
       }
-    ]
+    ],
+    "fatigue": {
+      "excelView": 4,
+      "gridView": 1
+    }
   },
   {
     "userId": "U-009",
@@ -677,66 +709,66 @@
     "quizSequence": [
       {
         "round": 1,
-        "taskId": "T03",
-        "taskLabel": "서빙 완료된 사이드 찾기",
+        "taskId": "T05",
+        "taskLabel": "테이블 2의 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 7588,
-          "misclickCount": 4
+          "responseTimeMs": 5629,
+          "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 7121,
-          "misclickCount": 5
+          "responseTimeMs": 5930,
+          "misclickCount": 3
         }
       },
       {
         "round": 2,
-        "taskId": "T05",
-        "taskLabel": "테이블 2의 메인 메뉴 찾기",
+        "taskId": "T04",
+        "taskLabel": "가장 오래 대기한 주문 찾기",
         "excelView": {
-          "responseTimeMs": 5810,
+          "responseTimeMs": 6833,
           "misclickCount": 4
         },
         "gridView": {
-          "responseTimeMs": 5232,
+          "responseTimeMs": 6642,
           "misclickCount": 4
         }
       },
       {
         "round": 3,
-        "taskId": "T02",
-        "taskLabel": "테이블 4의 음료 선택",
+        "taskId": "T01",
+        "taskLabel": "가장 최근 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 5819,
-          "misclickCount": 3
+          "responseTimeMs": 4925,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 5814,
-          "misclickCount": 3
+          "responseTimeMs": 5491,
+          "misclickCount": 2
         }
       },
       {
         "round": 4,
-        "taskId": "T01",
-        "taskLabel": "가장 최근 메인 메뉴 찾기",
+        "taskId": "T02",
+        "taskLabel": "테이블 4의 음료 선택",
         "excelView": {
-          "responseTimeMs": 4453,
+          "responseTimeMs": 5614,
           "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 5018,
-          "misclickCount": 4
+          "responseTimeMs": 6028,
+          "misclickCount": 2
         }
       },
       {
         "round": 5,
-        "taskId": "T04",
-        "taskLabel": "가장 오래 대기한 주문 찾기",
+        "taskId": "T03",
+        "taskLabel": "서빙 완료된 사이드 찾기",
         "excelView": {
-          "responseTimeMs": 6384,
-          "misclickCount": 3
+          "responseTimeMs": 7627,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 5976,
+          "responseTimeMs": 6804,
           "misclickCount": 3
         }
       },
@@ -745,15 +777,19 @@
         "taskId": "T06",
         "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
         "excelView": {
-          "responseTimeMs": 6892,
+          "responseTimeMs": 7525,
           "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 6330,
-          "misclickCount": 4
+          "responseTimeMs": 6866,
+          "misclickCount": 3
         }
       }
-    ]
+    ],
+    "fatigue": {
+      "excelView": 5,
+      "gridView": 2
+    }
   },
   {
     "userId": "U-010",
@@ -761,15 +797,15 @@
     "quizSequence": [
       {
         "round": 1,
-        "taskId": "T04",
-        "taskLabel": "가장 오래 대기한 주문 찾기",
+        "taskId": "T01",
+        "taskLabel": "가장 최근 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 6753,
-          "misclickCount": 5
+          "responseTimeMs": 5649,
+          "misclickCount": 4
         },
         "gridView": {
-          "responseTimeMs": 6819,
-          "misclickCount": 6
+          "responseTimeMs": 5060,
+          "misclickCount": 5
         }
       },
       {
@@ -777,67 +813,71 @@
         "taskId": "T02",
         "taskLabel": "테이블 4의 음료 선택",
         "excelView": {
-          "responseTimeMs": 6814,
+          "responseTimeMs": 6577,
           "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 6117,
+          "responseTimeMs": 5946,
           "misclickCount": 4
         }
       },
       {
         "round": 3,
-        "taskId": "T01",
-        "taskLabel": "가장 최근 메인 메뉴 찾기",
+        "taskId": "T04",
+        "taskLabel": "가장 오래 대기한 주문 찾기",
         "excelView": {
-          "responseTimeMs": 5389,
-          "misclickCount": 2
+          "responseTimeMs": 6769,
+          "misclickCount": 4
         },
         "gridView": {
-          "responseTimeMs": 5104,
-          "misclickCount": 3
+          "responseTimeMs": 6923,
+          "misclickCount": 4
         }
       },
       {
         "round": 4,
-        "taskId": "T06",
-        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
+        "taskId": "T03",
+        "taskLabel": "서빙 완료된 사이드 찾기",
         "excelView": {
-          "responseTimeMs": 7883,
-          "misclickCount": 4
+          "responseTimeMs": 7537,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 7306,
+          "responseTimeMs": 7384,
           "misclickCount": 5
         }
       },
       {
         "round": 5,
-        "taskId": "T03",
-        "taskLabel": "서빙 완료된 사이드 찾기",
+        "taskId": "T05",
+        "taskLabel": "테이블 2의 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 7355,
-          "misclickCount": 2
+          "responseTimeMs": 5656,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 7116,
+          "responseTimeMs": 6007,
           "misclickCount": 3
         }
       },
       {
         "round": 6,
-        "taskId": "T05",
-        "taskLabel": "테이블 2의 메인 메뉴 찾기",
+        "taskId": "T06",
+        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
         "excelView": {
-          "responseTimeMs": 5384,
-          "misclickCount": 1
+          "responseTimeMs": 7509,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 6048,
-          "misclickCount": 2
+          "responseTimeMs": 6970,
+          "misclickCount": 4
         }
       }
-    ]
+    ],
+    "fatigue": {
+      "excelView": 4,
+      "gridView": 2
+    }
   },
   {
     "userId": "U-011",
@@ -845,54 +885,54 @@
     "quizSequence": [
       {
         "round": 1,
-        "taskId": "T05",
-        "taskLabel": "테이블 2의 메인 메뉴 찾기",
+        "taskId": "T02",
+        "taskLabel": "테이블 4의 음료 선택",
         "excelView": {
-          "responseTimeMs": 4757,
-          "misclickCount": 3
+          "responseTimeMs": 5489,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 5252,
-          "misclickCount": 4
+          "responseTimeMs": 6278,
+          "misclickCount": 3
         }
       },
       {
         "round": 2,
-        "taskId": "T01",
-        "taskLabel": "가장 최근 메인 메뉴 찾기",
+        "taskId": "T06",
+        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
         "excelView": {
-          "responseTimeMs": 4497,
-          "misclickCount": 4
+          "responseTimeMs": 6954,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 3988,
+          "responseTimeMs": 7233,
           "misclickCount": 4
         }
       },
       {
         "round": 3,
-        "taskId": "T04",
-        "taskLabel": "가장 오래 대기한 주문 찾기",
+        "taskId": "T05",
+        "taskLabel": "테이블 2의 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 6302,
-          "misclickCount": 4
+          "responseTimeMs": 5553,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 5588,
-          "misclickCount": 4
+          "responseTimeMs": 6059,
+          "misclickCount": 1
         }
       },
       {
         "round": 4,
-        "taskId": "T06",
-        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
+        "taskId": "T04",
+        "taskLabel": "가장 오래 대기한 주문 찾기",
         "excelView": {
-          "responseTimeMs": 6223,
-          "misclickCount": 3
+          "responseTimeMs": 6511,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 6583,
-          "misclickCount": 4
+          "responseTimeMs": 6297,
+          "misclickCount": 2
         }
       },
       {
@@ -900,28 +940,32 @@
         "taskId": "T03",
         "taskLabel": "서빙 완료된 사이드 찾기",
         "excelView": {
-          "responseTimeMs": 6485,
-          "misclickCount": 3
+          "responseTimeMs": 7317,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 6197,
-          "misclickCount": 3
+          "responseTimeMs": 6925,
+          "misclickCount": 1
         }
       },
       {
         "round": 6,
-        "taskId": "T02",
-        "taskLabel": "테이블 4의 음료 선택",
+        "taskId": "T01",
+        "taskLabel": "가장 최근 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 5346,
-          "misclickCount": 2
+          "responseTimeMs": 5007,
+          "misclickCount": 0
         },
         "gridView": {
-          "responseTimeMs": 4600,
-          "misclickCount": 2
+          "responseTimeMs": 4581,
+          "misclickCount": 1
         }
       }
-    ]
+    ],
+    "fatigue": {
+      "excelView": 3,
+      "gridView": 1
+    }
   },
   {
     "userId": "U-012",
@@ -929,14 +973,14 @@
     "quizSequence": [
       {
         "round": 1,
-        "taskId": "T06",
-        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
+        "taskId": "T03",
+        "taskLabel": "서빙 완료된 사이드 찾기",
         "excelView": {
-          "responseTimeMs": 7066,
+          "responseTimeMs": 6927,
           "misclickCount": 4
         },
         "gridView": {
-          "responseTimeMs": 7805,
+          "responseTimeMs": 6870,
           "misclickCount": 4
         }
       },
@@ -945,66 +989,70 @@
         "taskId": "T05",
         "taskLabel": "테이블 2의 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 6226,
-          "misclickCount": 2
+          "responseTimeMs": 5448,
+          "misclickCount": 3
         },
         "gridView": {
-          "responseTimeMs": 5608,
+          "responseTimeMs": 5193,
           "misclickCount": 3
         }
       },
       {
         "round": 3,
-        "taskId": "T01",
-        "taskLabel": "가장 최근 메인 메뉴 찾기",
+        "taskId": "T04",
+        "taskLabel": "가장 오래 대기한 주문 찾기",
         "excelView": {
-          "responseTimeMs": 5627,
-          "misclickCount": 1
+          "responseTimeMs": 6252,
+          "misclickCount": 2
         },
         "gridView": {
-          "responseTimeMs": 4938,
-          "misclickCount": 3
+          "responseTimeMs": 6281,
+          "misclickCount": 4
         }
       },
       {
         "round": 4,
-        "taskId": "T04",
-        "taskLabel": "가장 오래 대기한 주문 찾기",
+        "taskId": "T02",
+        "taskLabel": "테이블 4의 음료 선택",
         "excelView": {
-          "responseTimeMs": 6535,
-          "misclickCount": 3
+          "responseTimeMs": 5769,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 7197,
-          "misclickCount": 3
+          "responseTimeMs": 5251,
+          "misclickCount": 2
         }
       },
       {
         "round": 5,
-        "taskId": "T03",
-        "taskLabel": "서빙 완료된 사이드 찾기",
+        "taskId": "T06",
+        "taskLabel": "주문 대기 음료 중 가장 오래된 항목 찾기",
         "excelView": {
-          "responseTimeMs": 7674,
-          "misclickCount": 2
+          "responseTimeMs": 6761,
+          "misclickCount": 1
         },
         "gridView": {
-          "responseTimeMs": 7096,
-          "misclickCount": 3
+          "responseTimeMs": 6760,
+          "misclickCount": 2
         }
       },
       {
         "round": 6,
-        "taskId": "T02",
-        "taskLabel": "테이블 4의 음료 선택",
+        "taskId": "T01",
+        "taskLabel": "가장 최근 메인 메뉴 찾기",
         "excelView": {
-          "responseTimeMs": 6021,
-          "misclickCount": 1
+          "responseTimeMs": 4421,
+          "misclickCount": 0
         },
         "gridView": {
-          "responseTimeMs": 5552,
+          "responseTimeMs": 4099,
           "misclickCount": 2
         }
       }
-    ]
+    ],
+    "fatigue": {
+      "excelView": 1,
+      "gridView": 4
+    }
   }
 ]
